@@ -1,0 +1,280 @@
+/* ================= GLOBAL RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ================= POLICE THEME COLORS ================= */
+:root {
+  --police-dark: #0a192f;
+  --police-blue: #1e3a8a;
+  --police-light-blue: #3b82f6;
+  --police-gold: #fbbf24;
+  --police-white: #ffffff;
+  --police-gray: #f3f4f6;
+  --police-text: #1f2937;
+  --police-danger: #ef4444;
+  --police-success: #10b981;
+}
+
+/* ================= BODY ================= */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--police-dark) 0%, var(--police-blue) 100%);
+  min-height: 100vh;
+  color: var(--police-text);
+  line-height: 1.6;
+}
+
+/* ================= CONTAINERS ================= */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ================= CARDS ================= */
+.form-card, .card {
+  background: var(--police-white);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 800px;
+  border-top: 4px solid var(--police-gold);
+}
+
+/* ================= HEADINGS ================= */
+h1, h2, h3 {
+  color: var(--police-blue);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: center;
+  border-bottom: 3px solid var(--police-gold);
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+}
+
+/* ================= FORMS ================= */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input, select, textarea {
+  padding: 14px 18px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--police-light-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ================= BUTTONS ================= */
+button {
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--police-blue) 0%, var(--police-light-blue) 100%);
+  color: var(--police-white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ================= TABLES ================= */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--police-white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.styled-table thead {
+  background: linear-gradient(135deg, var(--police-blue) 0%, var(--police-light-blue) 100%);
+  color: var(--police-white);
+}
+
+.styled-table th, .styled-table td {
+  padding: 16px;
+  text-align: left;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.2s ease;
+}
+
+.styled-table tbody tr:hover {
+  background: var(--police-gray);
+}
+
+/* ================= BADGES ================= */
+.badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.badge.missing {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge.found {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* ================= LOADING ================= */
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: var(--police-blue);
+  font-weight: 600;
+}
+
+/* ================= POPUP/OVERLAY ================= */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: var(--police-white);
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border-top: 4px solid var(--police-gold);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--police-danger);
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.close-btn:hover {
+  background: #dc2626;
+  transform: rotate(90deg);
+}
+
+/* ================= IMAGES ================= */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .form-card, .card {
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .styled-table {
+    font-size: 0.9rem;
+  }
+
+  .styled-table th, .styled-table td {
+    padding: 10px;
+  }
+}
+
+/* ================= UTILITY CLASSES ================= */
+.text-center {
+  text-align: center;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.success {
+  color: var(--police-success);
+}
+
+.error {
+  color: var(--police-danger);
+}

@@ -1,0 +1,86 @@
+<div class="dashboard-layout">
+
+  <!-- 🔵 SIDEBAR -->
+  <div class="sidebar">
+
+    <h3>Citizen Panel</h3>
+
+    <ul>
+  <li routerLink="/report-missing">🚨 Report Cases</li>
+  <li routerLink="/view-missing">📄 View Cases</li>
+</ul>
+    <hr>
+
+  <p>📞 Helpline: 100 / 112</p>
+  <p>📱 WhatsApp: 8975283100</p>
+  <p>📧 Email: police@pune.gov.in</p>
+
+  <small>© 2026 Pune City Police</small>
+
+  </div>
+
+  <!-- 🟢 MAIN CONTENT -->
+  <div class="content">
+
+    <h2>Citizen Dashboard</h2>
+
+    <div *ngIf="activeSection === 'report'">
+      <h3>Report Missing Person</h3>
+      <p>Form will come here...</p>
+    </div>
+
+    <div *ngIf="activeSection === 'view'">
+      <h3>Missing Persons List</h3>
+    </div>
+
+    <div *ngIf="activeSection === 'search'">
+      <h3>Search Person</h3>
+    </div>
+
+    <div *ngIf="activeSection === 'fir'">
+      <h3>Apply FIR</h3>
+    </div>
+
+    <div *ngIf="activeSection === 'cases'">
+      <h3>My Cases</h3>
+    </div>
+
+    <div *ngIf="activeSection === 'download'">
+      <h3>Download FIR</h3>
+    </div>
+
+  </div>
+
+  <!-- 🔔 NEWS BOX -->
+ <!-- 🔔 NEWS BOX (FIXED & PERMANENT) -->
+<div class="news-box">
+
+  <div class="news-header">
+    🚨 Important Notice
+  </div>
+
+  <div class="news-content">
+    <p>🚨 Missing person cases have increased this month. Stay alert and report immediately.</p>
+
+    <p>📢 Online FIR system is now active. Citizens can file FIR from home.</p>
+
+    <p>🔍 Use AI-powered search to find missing persons faster.</p>
+
+    <p>📞 Emergency Helpline: Dial 100 / 112 for immediate police assistance.</p>
+
+    <p>🛡 Always verify identity before helping unknown individuals.</p>
+
+    <p>📍 New police stations added for faster case handling.</p>
+
+    <p>📢 Upload clear photos while reporting missing persons for better results.</p>
+
+    <p>⚠ Fake reporting is punishable under law. Provide correct details only.</p>
+
+    <p>📲 Track your FIR and case status online in real-time.</p>
+
+    <p>🚔 Police verification process has been improved for faster investigation.</p>
+  </div>
+
+</div>
+
+</div>

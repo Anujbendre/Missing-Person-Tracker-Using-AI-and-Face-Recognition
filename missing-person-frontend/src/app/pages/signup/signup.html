@@ -1,0 +1,40 @@
+<div class="signup-wrapper">
+
+  <div class="signup-box">
+
+    <h4 class="subtitle">Welcome to Police System</h4>
+    <h2 class="title">Sign up</h2>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+      <!-- NAME -->
+      <label>Full name</label>
+      <input type="text" formControlName="name" placeholder="Enter full name">
+
+      <!-- EMAIL -->
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="Enter email">
+
+      <!-- MOBILE -->
+      <label>Mobile Number</label>
+      <input type="text" formControlName="mobile" placeholder="Enter mobile number">
+
+      <!-- PASSWORD -->
+      <label>Password</label>
+      <div class="password-box">
+        <input type="password" formControlName="password" placeholder="Enter password">
+        <span class="eye">👁</span>
+      </div>
+
+      <!-- BUTTON -->
+      <button type="submit">Sign up</button>
+
+    </form>
+
+    <p class="login-text">
+      Already have an account? <span routerLink="/police-login">Login</span>
+    </p>
+
+  </div>
+
+</div>

@@ -1,0 +1,16 @@
+admin register:
+
+{
+  "full_name": "Super Admin",
+  "email": "admin@system.com",
+  "password": "Admin@123",
+  "role_id": 1
+}
+
+
+admin login:
+
+{
+  "email": "admin@system.com",
+  "password": "Admin@123"
+}

@@ -1,0 +1,143 @@
+/* =========================
+   🔥 POPUP CARD
+========================= */
+.signup-card {
+  position: relative;
+  width: 420px;
+  padding: 25px;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  overflow: hidden;
+  max-height: 90vh;
+  animation: popupFade 0.3s ease;
+}
+
+/* POPUP ANIMATION */
+@keyframes popupFade {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================
+   ❌ CLOSE BUTTON
+========================= */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: -160px; /* ✅ FIXED POSITION */
+  z-index: 10;
+  font-size: 22px;
+  color: red !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  transform: rotate(90deg) scale(1.2);
+  color: darkred !important;
+}
+
+/* =========================
+   🧾 TITLE
+========================= */
+.signup-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* =========================
+   📦 INPUT FIELDS
+========================= */
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* INPUT STYLE */
+.mat-mdc-text-field-wrapper {
+  border-radius: 10px !important;
+  background: #f5f7fa !important;
+  transition: all 0.3s ease;
+}
+
+/* INPUT HOVER */
+.mat-mdc-text-field-wrapper:hover {
+  background: #eaf1ff !important;
+}
+
+/* INPUT FOCUS */
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  border: 2px solid #4b2c82 !important;
+  background: #ffffff !important;
+}
+
+/* =========================
+   🔽 DROPDOWN FIX
+========================= */
+
+/* Overlay */
+::ng-deep .cdk-overlay-pane {
+  z-index: 9999 !important;
+}
+
+/* Dropdown panel */
+::ng-deep .mat-mdc-select-panel {
+  background: #ffffff !important;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Options */
+::ng-deep .mat-mdc-option {
+  background: #ffffff !important;
+  color: #333 !important;
+}
+
+/* Hover option */
+::ng-deep .mat-mdc-option:hover {
+  background: #f0f4ff !important;
+}
+
+/* Selected option */
+::ng-deep .mat-mdc-option.mdc-list-item--selected {
+  background: #e0e7ff !important;
+  font-weight: bold;
+}
+
+/* =========================
+   🔘 BUTTON
+========================= */
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* Gradient button */
+button.mat-mdc-raised-button {
+  background: linear-gradient(45deg, #4b2c82, #6a3fb5);
+  color: white;
+}
+
+/* Hover */
+button.mat-mdc-raised-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* =========================
+   🚫 REMOVE SCROLLBAR
+========================= */
+::ng-deep .mat-mdc-dialog-content {
+  overflow: hidden !important;
+}

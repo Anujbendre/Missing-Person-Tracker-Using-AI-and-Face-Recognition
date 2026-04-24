@@ -1,0 +1,235 @@
+/* =========================
+   🔷 MAIN LAYOUT
+========================= */
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* =========================
+   🔵 SIDEBAR
+========================= */
+.sidebar {
+  width: 266px;
+  background: linear-gradient(180deg, #d78f3d);
+  color: white;
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+
+  display: flex;
+  flex-direction: column; /* ✅ STACK ITEMS */
+}
+
+/* TITLE */
+.sidebar h3 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 20px;
+}
+
+/* =========================
+   📋 MENU LIST
+========================= */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* MENU ITEM */
+.sidebar ul li {
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* HOVER */
+.sidebar ul li:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateX(5px);
+}
+
+/* ACTIVE */
+.sidebar ul li.active {
+  background: white;
+  color: #4b2c82;
+  font-weight: bold;
+}
+
+/* =========================
+   🔽 SIDEBAR FOOTER
+========================= */
+.sidebar-footer {
+  margin-top: 20px; /* ✅ small spacing only */
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.sidebar-footer hr {
+  border: 0.5px solid rgba(255,255,255,0.3);
+  margin-bottom: 10px;
+}
+
+.sidebar-footer p {
+  margin: 5px 0;
+}
+
+.sidebar-footer small {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* =========================
+   🟢 MAIN CONTENT
+========================= */
+.content {
+  flex: 1;
+  padding: 30px;
+
+  background: #f5f7fa;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* BACKGROUND IMAGE */
+.content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: url('/assets/police_logo.png') no-repeat center;
+  background-size: 300px; /* adjust size */
+
+  opacity: 0.25; /* 🔥 light watermark effect */
+
+  z-index: 0;
+}
+
+/* MAKE CONTENT ABOVE IMAGE */
+.content > * {
+  position: relative;
+  z-index: 1;
+}
+
+.content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   📦 CARD (OPTIONAL)
+========================= */
+.card-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+/* =========================
+   📊 TABLE STYLE
+========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table th {
+  background: #4b2c82;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+table tr:hover {
+  background: #f0f4ff;
+}
+
+/* =========================
+   🔔 NEWS BOX
+========================= */
+.news-box {
+  position: fixed;
+  right: 20px;
+  top: 120px;
+
+  width: 370px;
+  height: 300px; /* ✅ FIXED SIZE */
+
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  overflow: hidden; /* IMPORTANT */
+  z-index: 999;
+}
+
+/* HEADER */
+.news-header {
+  background: #4b2c82;
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* WRAPPER (VISIBLE AREA) */
+.news-wrapper {
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* CONTENT (MOVING) */
+.news-content {
+  position: absolute;
+  width: 100%;
+  animation: scrollNews 12s linear infinite;
+}
+
+/* NEWS TEXT */
+.news-content p {
+  margin: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* AUTO SCROLL ANIMATION */
+@keyframes scrollNews {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: -100%;
+  }
+}
+
+/* =========================
+   🎬 ANIMATION
+========================= */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

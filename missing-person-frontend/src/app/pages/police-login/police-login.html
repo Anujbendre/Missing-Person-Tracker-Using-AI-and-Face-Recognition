@@ -1,0 +1,44 @@
+<div class="page-container">
+
+  <div class="signup-card">
+
+    <!-- CLOSE BUTTON -->
+    <button class="close-btn" (click)="close()">❌</button>
+
+    <h2 class="title">🔐 Police Login</h2>
+
+    <form (ngSubmit)="login()">
+
+      <!-- EMAIL -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput 
+               type="email" 
+               [(ngModel)]="data.email" 
+               name="email" 
+               required>
+      </mat-form-field>
+
+      <!-- PASSWORD -->
+      <mat-form-field appearance="outline" class="full-width">
+
+        <mat-label>Password</mat-label>
+
+        <input matInput
+               type="password"
+               [(ngModel)]="data.password"
+               name="password"
+               required>
+
+      </mat-form-field>
+
+      <!-- BUTTON -->
+<button mat-raised-button color="primary" type="submit" class="login-btn">
+  Login
+</button>
+
+    </form>
+
+  </div>
+
+</div>

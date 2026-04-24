@@ -1,0 +1,9 @@
+Login
+register ==> full name , email , password , confirm password , mobile number,  role 
+ 
+admin=>
+ 
+police=>
+
+user=>
+

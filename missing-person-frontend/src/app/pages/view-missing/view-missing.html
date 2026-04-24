@@ -1,0 +1,185 @@
+<div class="container">
+
+  <h2 class="title">📋 View Cases</h2>
+
+  <div class="table-wrapper">
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">⏳ Loading cases...</div>
+
+  <!-- Table -->
+  <table *ngIf="!loading && cases.length > 0"
+         mat-table
+         [dataSource]="cases"
+         class="styled-table">
+
+    <!-- Person ID -->
+    <ng-container matColumnDef="person_id">
+      <th mat-header-cell *matHeaderCellDef>Case ID</th>
+      <td mat-cell *matCellDef="let e">
+        <span style="font-weight: 700; color: #1e3a8a;">#{{ e.person_id }}</span>
+      </td>
+    </ng-container>
+
+    <!-- Full Name -->
+    <ng-container matColumnDef="full_name">
+      <th mat-header-cell *matHeaderCellDef>Full Name</th>
+      <td mat-cell *matCellDef="let e">
+        <span style="font-weight: 600; color: #111827;">{{ e.full_name }}</span>
+      </td>
+    </ng-container>
+
+    <!-- Age -->
+    <ng-container matColumnDef="age">
+      <th mat-header-cell *matHeaderCellDef>Age</th>
+      <td mat-cell *matCellDef="let e">{{ e.age }}</td>
+    </ng-container>
+
+    <!-- Gender -->
+    <ng-container matColumnDef="gender">
+      <th mat-header-cell *matHeaderCellDef>Gender</th>
+      <td mat-cell *matCellDef="let e">{{ e.gender }}</td>
+    </ng-container>
+
+    <!-- Location -->
+    <ng-container matColumnDef="last_seen_location">
+      <th mat-header-cell *matHeaderCellDef>Last Seen Location</th>
+      <td mat-cell *matCellDef="let e">{{ e.last_seen_location }}</td>
+    </ng-container>
+
+    <!-- Description -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let e">
+        <button mat-button color="primary" (click)="viewDescription(e)">
+          <mat-icon>description</mat-icon> View
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Date -->
+    <ng-container matColumnDef="last_seen_date">
+      <th mat-header-cell *matHeaderCellDef>Last Seen Date</th>
+      <td mat-cell *matCellDef="let e">{{ e.last_seen_date }}</td>
+    </ng-container>
+
+    <!-- View -->
+<ng-container matColumnDef="photo_path">
+  <th mat-header-cell *matHeaderCellDef>View Photo</th>
+  <td mat-cell *matCellDef="let e">
+
+    <!-- Proper eye button with better styling -->
+    <button class="eye-button"
+            [disabled]="!e.photo_path"
+            (click)="viewImage(e.photo_path)"
+            title="View Photo">
+
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor"/>
+      </svg>
+
+    </button>
+
+  </td>
+</ng-container>
+
+    <!-- Status -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let e">
+        <span [ngClass]="{
+          'badge missing': e.status === 'MISSING',
+          'badge found': e.status === 'FOUND'
+        }">
+          {{ e.status }}
+        </span>
+      </td>
+    </ng-container>
+
+    <!--reporter mobile-->
+
+    <ng-container matColumnDef="reporter_mobile">
+      <th mat-header-cell *matHeaderCellDef>Contact</th>
+      <td mat-cell *matCellDef="let e">
+        <span style="font-weight: 600; color: #059669;">📞 {{ e.reporter_mobile }}</span>
+      </td>
+    </ng-container>
+
+
+
+    <!-- Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <!-- No Data -->
+  <div *ngIf="!loading && cases.length === 0" class="loading">
+    📭 No cases found for this mobile number
+  </div>
+  </div>
+
+  <!-- Image Popup -->
+  <div class="overlay" *ngIf="selectedImage" (click)="closeImage()">
+    <div class="popup image-popup" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeImage()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <img [src]="getImageUrl(selectedImage)" alt="Missing Person Image">
+    </div>
+  </div>
+
+  <!-- Description Popup -->
+  <div class="overlay" *ngIf="selectedCase" (click)="closeDescription()">
+    <div class="popup description-popup" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeDescription()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <h3>Case Details</h3>
+      <div class="description-content">
+        <p><strong>Name:</strong> {{ selectedCase?.full_name }}</p>
+        <p><strong>Age:</strong> {{ selectedCase?.age }}</p>
+        <p><strong>Gender:</strong> {{ selectedCase?.gender }}</p>
+        <p><strong>Last Seen:</strong> {{ selectedCase?.last_seen_location }}</p>
+        <p><strong>Date:</strong> {{ selectedCase?.last_seen_date }}</p>
+        <p><strong>Status:</strong> {{ selectedCase?.status }}</p>
+        <p><strong>Reporter Mobile:</strong> {{ selectedCase?.reporter_mobile }}</p>
+        <p *ngIf="selectedCase?.description"><strong>Description:</strong><br>{{ selectedCase?.description }}</p>
+        <p *ngIf="selectedCase?.additional_info"><strong>Additional Info:</strong><br>{{ selectedCase?.additional_info }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTP POPUP -->
+<div class="overlay" *ngIf="!isVerified">
+
+  <div class="popup">
+
+    <h3>🔐 Verify Your Identity</h3>
+    <p style="text-align: center; color: #6b7280; margin-bottom: 20px; font-size: 0.95rem;">Enter your registered mobile number to view your cases</p>
+
+    <input type="text" [(ngModel)]="mobile" placeholder="📱 Enter 10-digit Mobile Number" maxlength="10">
+
+    <button (click)="sendOtp()">📨 Send OTP</button>
+
+    <!-- ✅ SHOW OTP IN UI -->
+    <div *ngIf="generatedOtp" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); padding: 15px; border-radius: 12px; margin: 15px 0; text-align: center; border: 2px solid #10b981;">
+      <span style="color: #065f46; font-weight: 700; font-size: 1.1rem;">
+        ✅ Your OTP: <span style="font-size: 1.5rem; letter-spacing: 3px;">{{ generatedOtp }}</span>
+      </span>
+    </div>
+
+    <!-- OTP INPUT -->
+    <div *ngIf="otpSent" style="margin-top: 20px;">
+      <input type="text" [(ngModel)]="otp" placeholder="🔑 Enter OTP" maxlength="4">
+      <button (click)="verifyOtp()">✅ Verify & View Cases</button>
+    </div>
+
+  </div>
+
+</div>
+
+</div>

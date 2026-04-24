@@ -1,0 +1,88 @@
+<div class="fir-container">
+
+  <div class="fir-card">
+
+    <h2 class="fir-title">📄 Apply FIR</h2>
+
+    <form (ngSubmit)="submitFIR()">
+
+      <input 
+        type="text" 
+        placeholder="👤 Full Name" 
+        [(ngModel)]="firData.full_name" 
+        name="full_name"
+        required 
+      />
+
+      <input 
+        type="email" 
+        placeholder="📧 Email" 
+        [(ngModel)]="firData.email" 
+        name="email"
+        required 
+      />
+
+      <input 
+        type="text" 
+        placeholder="📱 Phone" 
+        [(ngModel)]="firData.phone" 
+        name="phone"
+        required 
+      />
+
+      <input 
+        type="text" 
+        placeholder="⚠️ Incident Type" 
+        [(ngModel)]="firData.incident_type" 
+        name="incident_type"
+        required 
+      />
+
+      <input 
+        type="text" 
+        placeholder="📍 Location" 
+        [(ngModel)]="firData.location" 
+        name="location"
+        required 
+      />
+
+      <textarea 
+        placeholder="📝 Description" 
+        [(ngModel)]="firData.description" 
+        name="description">
+      </textarea>
+
+      <input 
+        type="text" 
+        [(ngModel)]="firData.accused" 
+        name="accused"
+        placeholder="Accused Name" 
+      />
+
+      <input 
+        type="text" 
+        [(ngModel)]="firData.delay_reason" 
+        name="delay_reason"
+        placeholder="Reason for Delay" 
+      />
+
+      <input 
+        type="text" 
+        [(ngModel)]="firData.property" 
+        name="property"
+        placeholder="Property Involved" 
+      />
+
+      <input 
+        type="date" 
+        [(ngModel)]="firData.date" 
+        name="date"
+      />
+
+      <button type="submit">🚀 Submit FIR</button>
+
+    </form>
+
+  </div>
+
+</div>

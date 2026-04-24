@@ -1,0 +1,283 @@
+<!-- ================= MAIN SCROLLABLE WEBSITE ================= -->
+<div class="website-container">
+
+  <!-- ===== HEADER ===== -->
+  <header class="main-header" [class.scrolled]="isScrolled">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-box">
+          <img src="/assets/logo1.png" class="logo" />
+          <img src="/assets/logo2.png" class="logo" />
+        </div>
+        <h2 class="site-title">{{ 'TITLE' | translate }}</h2>
+      </div>
+
+      <nav class="menu">
+        <div class="dropdown">
+          <button class="dropbtn" (click)="toggleDropdown('about')" type="button">About ▾</button>
+          <div class="dropdown-content" [class.show]="activeDropdown === 'about'">
+            <a routerLink="/about-system" (click)="closeDropdown()">About System</a>
+            <a routerLink="/how-it-works" (click)="closeDropdown()">How It Works</a>
+            <a routerLink="/faqs" (click)="closeDropdown()">FAQs</a>
+            <a href="#" (click)="closeDropdown()">Contact Us</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn" (click)="toggleDropdown('citizen')" type="button">Citizen Corner ▾</button>
+          <div class="dropdown-content" [class.show]="activeDropdown === 'citizen'">
+            <a routerLink="/report-missing" (click)="closeDropdown()">🚨 Report Cases</a>
+            <a routerLink="/view-missing" (click)="closeDropdown()">📄 View Cases</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbtn" (click)="toggleDropdown('police')" type="button">👮 Police ▾</button>
+          <div class="dropdown-content" [class.show]="activeDropdown === 'police'">
+            <a routerLink="/police-login" (click)="closeDropdown()">🔐 Login</a>
+            <a routerLink="/police-signup" (click)="closeDropdown()">📝 Register</a>
+          </div>
+        </div>
+
+        <div class="lang-switch">
+          <button type="button" (click)="changeLang('en')">EN</button>
+          <button type="button" (click)="changeLang('hi')">हिं</button>
+          <button type="button" (click)="changeLang('mr')">मर</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== INFO BAR ===== -->
+  <div class="info-bar">
+    <div class="info-content">
+      <span>📞 Elder Line: 1090</span>
+      <span>👶 Child Line: 1098</span>
+      <span>👩 Women Helpline: 1091</span>
+      <span>📱 WhatsApp: 8975283100</span>
+      <span>🚔 Control Room: 100/112</span>
+    </div>
+  </div>
+
+  <!-- ===== SCROLLABLE CONTENT ===== -->
+  <main class="scrollable-main">
+    
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-bg-slider">
+        <div
+          class="bg-slide"
+          *ngFor="let img of images; let i = index"
+          [class.active]="i === currentIndex"
+          [style.backgroundImage]="'url(' + img + ')'"
+        ></div>
+        <div class="hero-overlay"></div>
+      </div>
+      
+      <div class="hero-content">
+        <p class="hero-subtitle animated fadeInUp">AI-Powered Face Recognition Technology</p>
+      </div>
+    </section>
+
+    <!-- LIVE NEWS TICKER -->
+    <section class="news-ticker-section">
+      <div class="ticker-wrapper">
+        <div class="ticker-label">🚨 LIVE UPDATES</div>
+        <div class="ticker-content">
+          <div class="ticker-text">
+            <span>Missing person cases have increased this month. Stay alert and report immediately.</span>
+            <span>•</span>
+            <span>Online FIR system is now active. Citizens can file FIR from home.</span>
+            <span>•</span>
+            <span>Use AI-powered search to find missing persons faster.</span>
+            <span>•</span>
+            <span>Emergency Helpline: Dial 100 / 112 for immediate police assistance.</span>
+            <span>•</span>
+            <span>New police stations added for faster case handling.</span>
+            <span>•</span>
+            <span>Track your FIR and case status online in real-time.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="stats-section">
+      <div class="container">
+        <h2 class="section-title">Impact Overview</h2>
+        <div class="stats-grid">
+          <div class="stat-card stat-card-1">
+            <div class="stat-icon">📁</div>
+            <div class="stat-number">250+</div>
+            <div class="stat-label">Cases Registered</div>
+          </div>
+          <div class="stat-card stat-card-2">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number">180+</div>
+            <div class="stat-label">Persons Found</div>
+          </div>
+          <div class="stat-card stat-card-3">
+            <div class="stat-icon">🤖</div>
+            <div class="stat-number">95%</div>
+            <div class="stat-label">AI Accuracy</div>
+          </div>
+          <div class="stat-card stat-card-4">
+            <div class="stat-icon">📹</div>
+            <div class="stat-number">500+</div>
+            <div class="stat-label">CCTV Connected</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAP SECTION -->
+    <section class="map-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">📍 Live Tracking Map</h2>
+          <p class="section-subtitle">Real-time missing person case locations</p>
+        </div>
+        <div class="map-container">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121059.04300274698!2d73.7799709582031!3d18.524598699999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1234567890"
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWS & UPDATES SECTION -->
+    <section class="news-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">📰 Latest News & Updates</h2>
+          <p class="section-subtitle">Stay informed about missing person cases</p>
+        </div>
+        <div class="news-scroll-container">
+          <div class="news-scroll-wrapper">
+            <div class="news-scroll-content">
+              <div class="news-card">
+                <div class="news-badge urgent">🚨 URGENT</div>
+                <h3>Missing Cases Rise in Pune Zone</h3>
+                <p>Authorities report a 15% increase in missing person cases this month. Police have deployed additional teams.</p>
+                <span class="news-date">2 hours ago</span>
+              </div>
+              <div class="news-card">
+                <div class="news-badge new">✨ NEW</div>
+                <h3>AI Recognition System Upgraded</h3>
+                <p>New face recognition algorithm improves accuracy by 25%. System now processes images 3x faster.</p>
+                <span class="news-date">5 hours ago</span>
+              </div>
+              <div class="news-card">
+                <div class="news-badge update">🔄 UPDATE</div>
+                <h3>CCTV Network Expanded</h3>
+                <p>200 new cameras installed across city. All major intersections now under surveillance.</p>
+                <span class="news-date">1 day ago</span>
+              </div>
+              <div class="news-card">
+                <div class="news-badge success">✅ SUCCESS</div>
+                <h3>15 Persons Found This Week</h3>
+                <p>Thanks to AI technology and public cooperation, 15 missing persons were successfully reunited with families.</p>
+                <span class="news-date">2 days ago</span>
+              </div>
+              <div class="news-card">
+                <div class="news-badge urgent">🚨 URGENT</div>
+                <h3>Missing Cases Rise in Pune Zone</h3>
+                <p>Authorities report a 15% increase in missing person cases this month. Police have deployed additional teams.</p>
+                <span class="news-date">2 hours ago</span>
+              </div>
+              <div class="news-card">
+                <div class="news-badge new">✨ NEW</div>
+                <h3>AI Recognition System Upgraded</h3>
+                <p>New face recognition algorithm improves accuracy by 25%. System now processes images 3x faster.</p>
+                <span class="news-date">5 hours ago</span>
+              </div>
+              <div class="news-card">
+                <div class="news-badge update">🔄 UPDATE</div>
+                <h3>CCTV Network Expanded</h3>
+                <p>200 new cameras installed across city. All major intersections now under surveillance.</p>
+                <span class="news-date">1 day ago</span>
+              </div>
+              <div class="news-card">
+                <div class="news-badge success">✅ SUCCESS</div>
+                <h3>15 Persons Found This Week</h3>
+                <p>Thanks to AI technology and public cooperation, 15 missing persons were successfully reunited with families.</p>
+                <span class="news-date">2 days ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="how-it-works-section">
+      <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon">📝</div>
+            <h3>Report Missing</h3>
+            <p>File a missing person report with photo and details</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon">🤖</div>
+            <h3>AI Analysis</h3>
+            <p>Our AI system analyzes facial features and creates encoding</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon">📹</div>
+            <h3>CCTV Scanning</h3>
+            <p>System continuously scans CCTV feeds for matches</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div class="step-icon">🎯</div>
+            <h3>Match Found</h3>
+            <p>Instant alert sent to police and family when match detected</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>🚔 Pune City Police</h3>
+          <p>Missing Person Tracking & AI Recognition System</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a routerLink="/about-system">About System</a>
+          <a routerLink="/how-it-works">How It Works</a>
+          <a routerLink="/faqs">FAQs</a>
+        </div>
+        <div class="footer-section">
+          <h4>Services</h4>
+          <a routerLink="/report-missing">Report Missing</a>
+          <a routerLink="/view-missing">View Cases</a>
+          <a routerLink="/police-login">Police Portal</a>
+        </div>
+        <div class="footer-section">
+          <h4>Emergency Contacts</h4>
+          <p>📞 Police: 100/112</p>
+          <p>📱 WhatsApp: 8975283100</p>
+          <p>📧 police@pune.gov.in</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Pune City Police | Missing Person Tracking System | All Rights Reserved</p>
+      </div>
+    </footer>
+
+  </main>
+
+</div>

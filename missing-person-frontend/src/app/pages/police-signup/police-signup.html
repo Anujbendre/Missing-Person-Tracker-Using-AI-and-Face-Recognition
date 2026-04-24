@@ -1,0 +1,57 @@
+<div class="signup-container">
+
+  <div class="signup-card">
+
+    <!-- CLOSE BUTTON -->
+    <button class="close-btn" (click)="close()">✖</button>
+
+    <h2 class="title">🚔 Police Registration</h2>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+      <!-- FULL NAME -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+
+      <!-- EMAIL -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email">
+      </mat-form-field>
+
+      <!-- PASSWORD -->
+      <mat-form-field appearance="outline" class="full-width">
+
+        <mat-label>Password</mat-label>
+
+        <input matInput
+               type="password"
+               formControlName="password">
+
+      </mat-form-field>
+
+      <!-- MOBILE -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mobile Number</mat-label>
+        <span matPrefix>+91&nbsp;</span>
+        <input matInput formControlName="mobile" maxlength="10">
+      </mat-form-field>
+
+      <!-- STATION -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Police Station</mat-label>
+        <input matInput formControlName="station_name">
+      </mat-form-field>
+
+      <!-- BUTTON -->
+<button mat-raised-button color="primary" class="full-width" type="submit">
+  Register
+</button>
+
+    </form>
+
+  </div>
+
+</div>

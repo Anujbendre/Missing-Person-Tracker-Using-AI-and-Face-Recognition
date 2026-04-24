@@ -1,0 +1,103 @@
+.container {
+  padding: 20px;
+  max-width: 500px;
+}
+
+input, textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+}
+
+button {
+  background: #2ecc71;
+  color: white;
+  padding: 10px;
+  border: none;
+  width: 100%;
+}
+
+/* 🌈 FULL BACKGROUND */
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🎯 CENTER CONTAINER */
+.fir-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* 🧾 CARD */
+.fir-card {
+  width: 400px;
+  padding: 25px;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  text-align: center;
+  transition: 0.3s;
+}
+
+/* ✨ CARD HOVER */
+.fir-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* 🧾 TITLE */
+.fir-card h2 {
+  margin-bottom: 20px;
+  color: #1e3a8a;
+}
+
+/* 🧾 INPUTS */
+.fir-card input,
+.fir-card textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+/* ✨ INPUT FOCUS */
+.fir-card input:focus,
+.fir-card textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+  outline: none;
+}
+
+/* 📝 TEXTAREA */
+.fir-card textarea {
+  height: 80px;
+  resize: none;
+}
+
+/* 🚀 BUTTON */
+.fir-card button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: linear-gradient(to right, #22c55e, #16a34a);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+
+/* ✨ BUTTON HOVER */
+.fir-card button:hover {
+  background: linear-gradient(to right, #16a34a, #15803d);
+  transform: scale(1.03);
+}

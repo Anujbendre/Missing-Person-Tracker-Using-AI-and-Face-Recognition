@@ -1,0 +1,599 @@
+<div class="ai-container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <h1>🎯 AI Face Recognition System</h1>
+        <p class="subtitle">Advanced Facial Recognition & Matching Engine</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-box">
+          <span class="stat-number">{{ cctvImages.length }}</span>
+          <span class="stat-label">CCTV Images</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">{{ missingPersons.length }}</span>
+          <span class="stat-label">Missing Persons</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">{{ scanHistory.length }}</span>
+          <span class="stat-label">Scans Today</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT PANEL: CASES & CCTV -->
+    <div class="panel left-panel">
+      
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn" [class.active]="activeTab === 'cases'" (click)="activeTab = 'cases'">
+          👤 Missing Persons
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'cctv'" (click)="activeTab = 'cctv'">
+          📹 CCTV Images
+        </button>
+      </div>
+
+      <!-- MISSING PERSONS TAB -->
+      <div class="tab-content" *ngIf="activeTab === 'cases'">
+        <h3 class="section-title">Select Missing Person Case</h3>
+        
+        <div class="scrollable-list">
+          <div *ngFor="let person of missingPersons" 
+               class="case-card" 
+               [class.selected]="selectedCase?.person_id === person.person_id"
+               (click)="selectCase(person)">
+            
+            <div class="case-image">
+              <img [src]="getImageUrl(person.photo_path)" [alt]="person.full_name" 
+                   (click)="previewImage(getImageUrl(person.photo_path), 'person')"
+                   style="cursor: pointer;">
+              <div class="case-status" [class]="person.status?.toLowerCase()">
+                {{ person.status || 'MISSING' }}
+              </div>
+            </div>
+            
+            <div class="case-info">
+              <h4>{{ person.full_name }}</h4>
+              <p class="case-detail">🆔 ID: {{ person.person_id }}</p>
+              <p class="case-detail">📍 {{ person.last_seen_location || 'Unknown' }}</p>
+              <p class="case-detail">📅 Age: {{ person.age || 'N/A' }} | Gender: {{ person.gender || 'N/A' }}</p>
+            </div>
+          </div>
+
+          <div *ngIf="missingPersons.length === 0" class="empty-state">
+            <p>No missing person cases found</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CCTV IMAGES TAB -->
+      <div class="tab-content" *ngIf="activeTab === 'cctv'">
+        <h3 class="section-title">CCTV Database Images</h3>
+        
+        <div class="scrollable-list">
+          <div *ngFor="let image of cctvImages" 
+               class="cctv-card" 
+               [class.selected]="selectedCCTVImage?.id === image.id"
+               (click)="selectCCTVImage(image)">
+            
+            <div class="cctv-image">
+              <img [src]="getImageUrl(image.image_path)" alt="CCTV Frame"
+                   (click)="previewImage(getImageUrl(image.image_path), 'cctv')"
+                   style="cursor: pointer;">
+              <div class="cctv-overlay">
+                <span class="cctv-timestamp">{{ image.created_at | date:'short' }}</span>
+              </div>
+            </div>
+            
+            <div class="cctv-info">
+              <p class="cctv-detail">📷 {{ image.camera_name || 'Camera ' + image.id }}</p>
+              <p class="cctv-detail">🕒 {{ image.created_at | date:'medium' }}</p>
+            </div>
+          </div>
+
+          <div *ngIf="cctvImages.length === 0" class="empty-state">
+            <p>⚠️ No CCTV images in database</p>
+            <p class="hint">Add CCTV frames to enable scanning</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER PANEL: SCANNING INTERFACE -->
+    <div class="panel center-panel">
+      
+      <div class="scanning-section">
+        <h3 class="section-title">🔍 Face Recognition Scanner</h3>
+
+        <!-- SELECTION STATUS -->
+        <div class="selection-status">
+          <div class="status-item">
+            <span class="status-icon">👤</span>
+            <div>
+              <p class="status-label">Selected Case</p>
+              <p class="status-value">{{ selectedCase?.full_name || 'None' }}</p>
+            </div>
+          </div>
+          <div class="status-item">
+            <span class="status-icon">📹</span>
+            <div>
+              <p class="status-label">CCTV Image</p>
+              <p class="status-value">{{ selectedCCTVImage ? 'Selected' : 'None' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="action-buttons">
+          <button class="btn btn-primary" 
+                  (click)="scanImage()" 
+                  [disabled]="isScanning || !selectedCase || !selectedCCTVImage">
+            <span *ngIf="!isScanning">🔍 Scan This Image</span>
+            <span *ngIf="isScanning">⏳ Scanning...</span>
+          </button>
+          
+          <button class="btn btn-secondary" 
+                  (click)="scanAllImages()" 
+                  [disabled]="isScanning || !selectedCase || cctvImages.length === 0">
+            <span *ngIf="!isScanning">🚀 Scan All Images</span>
+            <span *ngIf="isScanning">⏳ Processing...</span>
+          </button>
+          
+          <!-- CANCEL BUTTON -->
+          <button class="btn btn-cancel" 
+                  *ngIf="isScanning"
+                  (click)="cancelScanning()">
+            ⏹️ Cancel
+          </button>
+        </div>
+        
+        <!-- SELECTED IMAGE PREVIEW -->
+        <div class="selected-image-preview" *ngIf="selectedCCTVImage">
+          <h4 class="preview-title">📷 Selected Image for Scanning:</h4>
+          <div class="preview-container">
+            <img [src]="getImageUrl(selectedCCTVImage.image_path)" 
+                 alt="Selected CCTV Image" 
+                 class="preview-img">
+            <div class="preview-overlay">
+              <span class="preview-badge">READY TO SCAN</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADVANCED RECOGNITION SECTION -->
+        <div class="advanced-recognition-section">
+          <h4 class="section-subtitle">🧠 Advanced AI Recognition (CNN-based)</h4>
+          
+          <div class="upload-area">
+            <input type="file" 
+                   id="imageUpload" 
+                   accept="image/*" 
+                   (change)="onImageSelected($event)" 
+                   style="display: none;">
+            <label for="imageUpload" class="upload-label">
+              <div class="upload-content">
+                <span class="upload-icon">📤</span>
+                <p class="upload-text">Click to upload image for recognition</p>
+                <p class="upload-hint">Supports JPG, PNG, WebP</p>
+              </div>
+            </label>
+          </div>
+
+          <div class="advanced-actions">
+            <button class="btn btn-advanced" 
+                    (click)="runAdvancedRecognition()" 
+                    [disabled]="isScanning || !selectedImageFile">
+              <span *ngIf="!isScanning">🎯 Run Advanced Recognition</span>
+              <span *ngIf="isScanning">⏳ Processing...</span>
+            </button>
+            
+            <button class="btn btn-encode" (click)="encodeDataset()">
+              🔄 Encode Dataset
+            </button>
+            
+            <!-- CANCEL BUTTON FOR ADVANCED -->
+            <button class="btn btn-cancel" 
+                    *ngIf="isScanning"
+                    (click)="cancelScanning()">
+              ⏹️ Cancel
+            </button>
+          </div>
+        </div>
+
+        <!-- SCANNING PROGRESS -->
+        <div class="scanning-progress" *ngIf="isScanning">
+          <div class="scanner-animation">
+            <div class="scanner-ring"></div>
+            <div class="scanner-face-icon">👤</div>
+            <!-- Scanning grid lines -->
+            <div class="scan-grid-line horizontal"></div>
+            <div class="scan-grid-line vertical"></div>
+          </div>
+          
+          <div class="progress-info">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="scanProgress"></div>
+            </div>
+            <p class="progress-text">{{ scanProgress }}%</p>
+            <p class="status-text">{{ scanStatus }}</p>
+          </div>
+        </div>
+
+        <!-- RESULTS SECTION -->
+        <div class="results-section" *ngIf="showResults && scanResult">
+          
+          <!-- DEBUG INFO -->
+          <div class="debug-info" style="background: rgba(255,255,0,0.1); padding: 10px; margin-bottom: 10px; border-radius: 8px;">
+            <p style="color: #ffff00; margin: 0; font-size: 0.9rem;">
+              🔍 Debug: showResults={{showResults}} | scanResult.type={{scanResult.type}}
+            </p>
+          </div>
+          
+          <!-- MATCH FOUND -->
+          <div class="result-card match-found" *ngIf="scanResult.type === 'match'">
+            <div class="result-header">
+              <span class="result-icon success">✅</span>
+              <h2>MATCH FOUND!</h2>
+            </div>
+            
+            <div class="match-details">
+              <div class="match-info-grid">
+                <div class="info-item">
+                  <label>Name</label>
+                  <span class="info-value">{{ scanResult.name }}</span>
+                </div>
+                <div class="info-item">
+                  <label>Person ID</label>
+                  <span class="info-value">{{ scanResult.personId }}</span>
+                </div>
+                <div class="info-item">
+                  <label>Confidence</label>
+                  <span class="info-value" [style.color]="getConfidenceColor(scanResult.confidence)">
+                    {{ scanResult.confidence }}%
+                  </span>
+                </div>
+                <div class="info-item">
+                  <label>Match Level</label>
+                  <span class="info-value" [style.color]="getConfidenceColor(scanResult.confidence)">
+                    {{ getConfidenceLabel(scanResult.confidence) }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="confidence-meter">
+                <div class="meter-label">Match Confidence</div>
+                <div class="meter-bar">
+                  <div class="meter-fill" 
+                       [style.width.%]="scanResult.confidence"
+                       [style.background]="getConfidenceColor(scanResult.confidence)">
+                  </div>
+                </div>
+                <div class="meter-value">{{ scanResult.confidence }}%</div>
+              </div>
+
+              <div class="matched-images">
+                <div class="image-box">
+                  <label>Missing Person</label>
+                  <img [src]="getImageUrl(scanResult.photo)" alt="Matched Person">
+                </div>
+                <div class="match-icon">≈</div>
+                <div class="image-box">
+                  <label>CCTV Image</label>
+                  <img [src]="getImageUrl(scanResult.scannedImage)" alt="CCTV Image">
+                </div>
+              </div>
+
+              <p class="scan-timestamp">🕒 {{ scanResult.timestamp }}</p>
+            </div>
+          </div>
+
+          <!-- NO MATCH -->
+          <div class="result-card no-match" *ngIf="scanResult.type === 'no-match'">
+            <div class="result-header">
+              <span class="result-icon error">❌</span>
+              <h2>NO MATCH FOUND</h2>
+            </div>
+            <p class="result-message">The scanned image does not match the selected missing person</p>
+            <div class="scanned-image">
+              <img [src]="getImageUrl(scanResult.scannedImage)" alt="Scanned Image">
+            </div>
+            <p class="scan-timestamp">🕒 {{ scanResult.timestamp }}</p>
+          </div>
+
+          <!-- BULK SCAN - MATCHES FOUND -->
+          <div class="result-card bulk-match" *ngIf="scanResult.type === 'bulk-match'">
+            <div class="result-header">
+              <span class="result-icon success">🎉</span>
+              <h2>MATCHES FOUND!</h2>
+            </div>
+            
+            <div class="bulk-stats">
+              <div class="stat">
+                <span class="stat-num">{{ scanResult.totalScanned }}</span>
+                <span class="stat-txt">Images Scanned</span>
+              </div>
+              <div class="stat">
+                <span class="stat-num highlight">{{ scanResult.matchesFound }}</span>
+                <span class="stat-txt">Matches Found</span>
+              </div>
+            </div>
+
+            <div class="best-match-section">
+              <h3>🏆 Best Match</h3>
+              <div class="best-match-card">
+                <img [src]="getImageUrl(scanResult.bestMatch.photo)" alt="Best Match">
+                <div class="match-info">
+                  <h4>{{ scanResult.bestMatch.name }}</h4>
+                  <p class="confidence" [style.color]="getConfidenceColor(scanResult.bestMatch.confidence)">
+                    {{ scanResult.bestMatch.confidence }}% Match
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p class="scan-timestamp">🕒 {{ scanResult.timestamp }}</p>
+          </div>
+
+          <!-- BULK SCAN - NO MATCHES -->
+          <div class="result-card bulk-no-match" *ngIf="scanResult.type === 'bulk-no-match'">
+            <div class="result-header">
+              <span class="result-icon warning">⚠️</span>
+              <h2>NO MATCHES FOUND</h2>
+            </div>
+            <div class="bulk-stats">
+              <div class="stat">
+                <span class="stat-num">{{ scanResult.totalScanned }}</span>
+                <span class="stat-txt">Images Scanned</span>
+              </div>
+              <div class="stat">
+                <span class="stat-num">0</span>
+                <span class="stat-txt">Matches Found</span>
+              </div>
+            </div>
+            <p class="result-message">No matching faces found in any CCTV images</p>
+            <p class="scan-timestamp">🕒 {{ scanResult.timestamp }}</p>
+          </div>
+
+          <!-- ERROR -->
+          <div class="result-card error-result" *ngIf="scanResult.type === 'error'">
+            <div class="result-header">
+              <span class="result-icon error">⚠️</span>
+              <h2>SCAN ERROR</h2>
+            </div>
+            <p class="result-message">{{ scanResult.message }}</p>
+          </div>
+
+          <!-- CANCELLED -->
+          <div class="result-card cancelled-result" *ngIf="scanResult.type === 'cancelled'">
+            <div class="result-header">
+              <span class="result-icon cancelled">⏹️</span>
+              <h2>SCAN CANCELLED</h2>
+            </div>
+            <p class="result-message">{{ scanResult.message }}</p>
+            <div class="cancel-details">
+              <p>Progress: {{ scanResult.progress }}% completed</p>
+              <p class="hint">You can restart the scan at any time</p>
+            </div>
+            <p class="scan-timestamp">🕒 {{ scanResult.timestamp }}</p>
+          </div>
+
+          <!-- ADVANCED RECOGNITION RESULTS -->
+          <div class="result-card advanced-result" *ngIf="showAdvancedRecognition && advancedRecognitionResult">
+            <div class="result-header">
+              <span class="result-icon ai">🧠</span>
+              <h2>ADVANCED AI RECOGNITION</h2>
+              <span class="processing-time">⏱️ {{ advancedRecognitionResult.processing_time }}s</span>
+            </div>
+
+            <div class="advanced-stats">
+              <div class="stat-item">
+                <span class="stat-value">{{ advancedRecognitionResult.total_faces }}</span>
+                <span class="stat-label">Faces Detected</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value">{{ advancedRecognitionResult.matches?.length || 0 }}</span>
+                <span class="stat-label">Matches Found</span>
+              </div>
+            </div>
+
+            <!-- MATCHES -->
+            <div class="matches-list" *ngIf="advancedRecognitionResult.matches && advancedRecognitionResult.matches.length > 0">
+              <div *ngFor="let match of advancedRecognitionResult.matches; let i = index" 
+                   class="match-item" 
+                   [class.match-found]="match.match_found" 
+                   [class.no-match]="!match.match_found">
+                
+                <div class="match-header">
+                  <span class="match-badge" *ngIf="match.match_found">✅ MATCH</span>
+                  <span class="match-badge no-match" *ngIf="!match.match_found">❌ NO MATCH</span>
+                  <span class="face-index">Face #{{ i + 1 }}</span>
+                </div>
+
+                <div class="match-details" *ngIf="match.match_found && match.person_info">
+                  <p class="detail-row">
+                    <span class="detail-label">👤 Person ID:</span>
+                    <span class="detail-value">{{ match.person_id }}</span>
+                  </p>
+                  <p class="detail-row">
+                    <span class="detail-label">🎯 Confidence:</span>
+                    <span class="detail-value confidence" [class.high]="match.confidence > 70" 
+                                                           [class.medium]="match.confidence >= 50 && match.confidence <= 70" 
+                                                           [class.low]="match.confidence < 50">
+                      {{ match.confidence }}%
+                    </span>
+                  </p>
+                  <p class="detail-row">
+                    <span class="detail-label">📏 Distance:</span>
+                    <span class="detail-value">{{ match.distance }}</span>
+                  </p>
+                </div>
+
+                <div class="match-details" *ngIf="!match.match_found">
+                  <p class="detail-row">
+                    <span class="detail-label">🎯 Best Confidence:</span>
+                    <span class="detail-value low">{{ match.confidence }}%</span>
+                  </p>
+                  <p class="detail-row">
+                    <span class="detail-label">📏 Distance:</span>
+                    <span class="detail-value">{{ match.distance }}</span>
+                  </p>
+                </div>
+
+                <!-- FACE LOCATION -->
+                <div class="face-location">
+                  <span class="location-label">📍 Face Location:</span>
+                  <code>[{{ match.face_location.join(', ') }}]</code>
+                </div>
+              </div>
+            </div>
+
+            <!-- ANNOTATED IMAGE -->
+            <div class="annotated-image-section" *ngIf="advancedRecognitionResult.annotated_image_url">
+              <h4 class="section-subtitle">🖼️ Annotated Result</h4>
+              <img [src]="advancedRecognitionResult.annotated_image_url" 
+                   alt="Annotated Recognition Result" 
+                   class="annotated-image"
+                   (click)="previewImage(advancedRecognitionResult.annotated_image_url, 'person')">
+            </div>
+
+            <p class="scan-timestamp">🕒 {{ advancedRecognitionResult.timestamp | date:'medium' }}</p>
+          </div>
+
+        </div>
+
+        <!-- NO RESULTS YET -->
+        <div class="no-results" *ngIf="!showResults && !isScanning">
+          <div class="empty-icon">🔍</div>
+          <h3>Ready to Scan</h3>
+          <p>Select a missing person case and CCTV image to begin facial recognition</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: SCAN HISTORY -->
+    <div class="panel right-panel">
+      <h3 class="section-title">📊 Scan History</h3>
+      
+      <!-- CIRCULAR GRAPH / PIE CHART -->
+      <div class="statistics-chart" *ngIf="totalScans > 0">
+        <h4 class="chart-title">Recognition Statistics</h4>
+        
+        <div class="pie-chart-container">
+          <svg class="pie-chart" viewBox="0 0 100 100">
+            <!-- Background circle -->
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#2a5298" stroke-width="20"/>
+            
+            <!-- Match found arc (green) -->
+            <circle *ngIf="matchPercentage > 0"
+                    cx="50" cy="50" r="40" 
+                    fill="none" 
+                    stroke="#00ff9c" 
+                    stroke-width="20"
+                    [attr.stroke-dasharray]="matchPercentage + ' ' + (100 - matchPercentage)"
+                    stroke-dashoffset="25"
+                    transform="rotate(-90 50 50)"/>
+            
+            <!-- Center text -->
+            <text x="50" y="45" text-anchor="middle" fill="white" font-size="12" font-weight="bold">
+              {{ totalScans }}
+            </text>
+            <text x="50" y="58" text-anchor="middle" fill="#aaa" font-size="6">
+              Total Scans
+            </text>
+          </svg>
+        </div>
+
+        <div class="chart-legend">
+          <div class="legend-item">
+            <span class="legend-color found"></span>
+            <span class="legend-label">Found: {{ matchesFound }} ({{ matchPercentage }}%)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color not-found"></span>
+            <span class="legend-label">Not Found: {{ notFound }} ({{ notFoundPercentage }}%)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scrollable-list">
+        <div *ngFor="let history of scanHistory" class="history-card">
+          <div class="history-icon" [class]="history.type">
+            <span *ngIf="history.type === 'match'">✅</span>
+            <span *ngIf="history.type === 'no-match'">❌</span>
+            <span *ngIf="history.type === 'error'">⚠️</span>
+            <span *ngIf="history.type === 'bulk-match'">🎉</span>
+            <span *ngIf="history.type === 'bulk-no-match'">⚠️</span>
+          </div>
+          <div class="history-info">
+            <p class="history-type">{{ history.type | titlecase }}</p>
+            <p class="history-time">{{ history.timestamp }}</p>
+            <p class="history-confidence" *ngIf="history.confidence">
+              Confidence: {{ history.confidence }}%
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="scanHistory.length === 0" class="empty-state">
+          <p>No scans performed yet</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 🎯 SMART ALERT NOTIFICATION POPUP -->
+  <div class="alert-notification" *ngIf="showAlertPanel && activeAlerts.length > 0">
+    <div class="alert-header">
+      <h3>🔔 Active Alerts</h3>
+      <button class="close-alerts-btn" (click)="clearAllAlerts()">✕ Clear All</button>
+    </div>
+    
+    <div class="alert-list">
+      <div *ngFor="let alert of activeAlerts" class="alert-item match-alert">
+        <div class="alert-icon">🎯</div>
+        <div class="alert-content">
+          <h4 class="alert-title">{{ alert.title }}</h4>
+          <p class="alert-message">{{ alert.message }}</p>
+          <div class="alert-details" *ngIf="alert.data">
+            <span class="alert-detail-item">👤 {{ alert.data.name }}</span>
+            <span class="alert-detail-item">🎯 {{ alert.data.confidence }}% Match</span>
+            <span class="alert-detail-item">🕒 {{ alert.timestamp | date:'short' }}</span>
+          </div>
+        </div>
+        <button class="dismiss-alert-btn" (click)="dismissAlert(alert.id)">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🖼️ IMAGE PREVIEW MODAL -->
+  <div class="image-preview-modal" *ngIf="showImagePreview" (click)="closeImagePreview()">
+    <div class="image-preview-content" (click)="$event.stopPropagation()">
+      <button class="preview-close-btn" (click)="closeImagePreview()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      
+      <div class="preview-header">
+        <span class="preview-badge" [class]="previewImageType">
+          {{ previewImageType === 'cctv' ? '📹 CCTV Image' : '👤 Person Photo' }}
+        </span>
+      </div>
+      
+      <div class="preview-image-container">
+        <img [src]="previewImageUrl" alt="Preview" class="preview-image">
+      </div>
+      
+      <div class="preview-actions">
+        <button class="btn-preview-action" (click)="closeImagePreview()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

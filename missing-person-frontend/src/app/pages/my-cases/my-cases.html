@@ -1,0 +1,53 @@
+<div class="container">
+  <h2>📁 My Cases</h2>
+
+  <!-- Loading -->
+  <p *ngIf="loading">Loading...</p>
+
+  <!-- No Data -->
+  <p *ngIf="!loading && cases.length === 0">
+    No cases found ❌
+  </p>
+
+  <!-- TABLE -->
+  <table *ngIf="!loading && cases.length > 0" class="table">
+
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Location</th>
+        <th>Image</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let c of cases">
+        <td>{{ c.person_id }}</td>
+        <td>{{ c.full_name }}</td>
+        <td>{{ c.age }}</td>
+        <td>{{ c.gender }}</td>
+        <td>{{ c.last_seen_location }}</td>
+
+        <td>
+          <button (click)="viewImage(c.photo_path)">👁</button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <!-- IMAGE MODAL -->
+  <div class="modal" *ngIf="selectedImage">
+    <div class="modal-content">
+      <span (click)="closeImage()">❌</span>
+
+      <img 
+        [src]="selectedImage"
+      />
+    </div>
+  </div>
+
+</div>

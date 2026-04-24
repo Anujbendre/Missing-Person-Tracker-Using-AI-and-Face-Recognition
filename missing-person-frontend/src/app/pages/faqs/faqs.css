@@ -1,0 +1,35 @@
+.faq-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 40px;
+}
+
+.subtitle {
+  color: gray;
+  margin-bottom: 20px;
+}
+
+/* FAQ BOX */
+.faq-box {
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* QUESTION */
+.question {
+  background: #f39c12;
+  color: white;
+  padding: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+/* ANSWER */
+.answer {
+  background: #f4f4f4;
+  padding: 15px;
+}

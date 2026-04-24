@@ -1,0 +1,549 @@
+<div class="gov-dashboard-wrapper">
+
+  <!-- GOVERNMENT HEADER BANNER -->
+  <div class="gov-top-banner">
+    <div class="gov-banner-container">
+      <div class="gov-banner-left">
+        <img src="/assets/police_logo.png" alt="Police Logo" class="gov-banner-logo">
+        <div class="gov-title-block">
+          <h1 class="gov-main-title">Pune City Police</h1>
+          <p class="gov-subtitle">Missing Person Tracking & AI Recognition System</p>
+          <p class="gov-ministry">Maharashtra State Police | Government of India</p>
+        </div>
+      </div>
+      <div class="gov-banner-right">
+        <div class="gov-emblem-box">
+          <div class="ashoka-emblem">&#9800;</div>
+          <p class="gov-swachha">Swachha Bharat | Digital India</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOVERNMENT NAVIGATION BAR -->
+  <nav class="gov-nav-bar">
+    <div class="gov-nav-container">
+      <div class="gov-nav-left">
+        <a routerLink="/police-dashboard" class="gov-nav-item active">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+        <a routerLink="/police-cases" class="gov-nav-item">
+          <span class="nav-icon">📁</span> Cases
+        </a>
+        <a routerLink="/apply-fir" class="gov-nav-item">
+          <span class="nav-icon">📝</span> Apply FIR
+        </a>
+        <a routerLink="/ai-recognition" class="gov-nav-item">
+          <span class="nav-icon">🤖</span> AI Recognition
+        </a>
+        <a routerLink="/cctv" class="gov-nav-item">
+          <span class="nav-icon">📹</span> CCTV
+        </a>
+        <a routerLink="/view-fir" class="gov-nav-item">
+          <span class="nav-icon">📋</span> FIR Records
+        </a>
+      </div>
+      <div class="gov-nav-right">
+        <button class="gov-refresh-btn" (click)="refreshData()" [disabled]="casesLoading || statsLoading">
+          <span *ngIf="!casesLoading && !statsLoading">&#x21bb;</span>
+          <span *ngIf="casesLoading || statsLoading">Loading...</span>
+        </button>
+        
+        <!-- OFFICER PROFILE -->
+        <div class="gov-profile-container" (click)="toggleProfileMenu()">
+          <div class="gov-profile-badge">
+            <span class="profile-avatar-icon">👮</span>
+            <span class="profile-officer-name" *ngIf="policeUser">{{ policeUser.name || 'Officer' }}</span>
+          </div>
+          
+          <!-- PROFILE DROPDOWN -->
+          <div class="gov-profile-dropdown" *ngIf="showProfileMenu" (click)="$event.stopPropagation()">
+            <div class="dropdown-header-section">
+              <div class="dropdown-avatar-circle">👮</div>
+              <div class="dropdown-officer-details">
+                <h3>{{ policeUser?.name || 'Police Officer' }}</h3>
+                <p>{{ policeUser?.email || 'N/A' }}</p>
+              </div>
+            </div>
+            
+            <div class="dropdown-divider-line"></div>
+            
+            <div class="dropdown-info-section">
+              <div class="info-row">
+                <span class="info-label-icon">🏢 Station:</span>
+                <span class="info-value-text">{{ policeUser?.station || 'N/A' }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label-icon">👤 Role:</span>
+                <span class="info-value-text">{{ policeUser?.role_name || 'Police' }}</span>
+              </div>
+              <div class="info-row" *ngIf="policeUser?.user_id">
+                <span class="info-label-icon">🆔 ID:</span>
+                <span class="info-value-text">{{ policeUser?.user_id }}</span>
+              </div>
+            </div>
+            
+            <div class="dropdown-divider-line"></div>
+            
+            <div class="dropdown-action-section">
+              <button class="gov-logout-button" (click)="logout()">
+                <span>🚪 Logout</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- GOVERNMENT NEWS TICKER -->
+  <div class="gov-news-ticker-bar">
+    <div class="ticker-label-box">
+      <span class="ticker-label">&#x1F6A8; LIVE UPDATES</span>
+    </div>
+    <div class="ticker-scroll-container">
+      <div class="ticker-scroll-content">
+        <span>Missing person cases have increased this month. Stay alert and report immediately.</span>
+        <span class="ticker-separator">&#x2022;</span>
+        <span>Online FIR system is now active. Citizens can file FIR from home.</span>
+        <span class="ticker-separator">&#x2022;</span>
+        <span>Use AI-powered search to find missing persons faster.</span>
+        <span class="ticker-separator">&#x2022;</span>
+        <span>Emergency Helpline: Dial 100 / 112 for immediate police assistance.</span>
+        <span class="ticker-separator">&#x2022;</span>
+        <span>New police stations added for faster case handling.</span>
+        <span class="ticker-separator">&#x2022;</span>
+        <span>Track your FIR and case status online in real-time.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN GOVERNMENT CONTENT AREA -->
+  <div class="gov-main-content">
+
+    <!-- STATISTICS CARDS -->
+    <div class="gov-stats-grid">
+      
+      <!-- Total Cases -->
+      <div class="stat-card total-card">
+        <div class="stat-icon">📁</div>
+        <div class="stat-info">
+          <h3 class="stat-number">
+            <span *ngIf="casesLoading" class="skeleton-loader">&nbsp;</span>
+            <span *ngIf="!casesLoading">{{ totalCases }}</span>
+          </h3>
+          <p class="stat-label">Total Cases</p>
+          <p class="stat-description">All registered cases</p>
+        </div>
+        <div class="stat-trend">
+          <span class="trend-badge">All Time</span>
+        </div>
+      </div>
+
+      <!-- Active Cases -->
+      <div class="stat-card active-card">
+        <div class="stat-icon">🔍</div>
+        <div class="stat-info">
+          <h3 class="stat-number">
+            <span *ngIf="casesLoading" class="skeleton-loader">&nbsp;</span>
+            <span *ngIf="!casesLoading">{{ activeCases }}</span>
+          </h3>
+          <p class="stat-label">Active Cases</p>
+          <p class="stat-description">Missing & In Progress</p>
+        </div>
+        <div class="stat-trend">
+          <span class="trend-badge urgent">Urgent</span>
+        </div>
+      </div>
+
+      <!-- Closed Cases -->
+      <div class="stat-card closed-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <h3 class="stat-number">
+            <span *ngIf="casesLoading" class="skeleton-loader">&nbsp;</span>
+            <span *ngIf="!casesLoading">{{ closedCases }}</span>
+          </h3>
+          <p class="stat-label">Closed Cases</p>
+          <p class="stat-description">Found & Resolved</p>
+        </div>
+        <div class="stat-trend">
+          <span class="trend-badge success">Resolved</span>
+        </div>
+      </div>
+
+      <!-- Matches Found -->
+      <div class="stat-card matches-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <h3 class="stat-number">
+            <span *ngIf="statsLoading" class="skeleton-loader">&nbsp;</span>
+            <span *ngIf="!statsLoading">{{ matchesFound }}</span>
+          </h3>
+          <p class="stat-label">AI Matches</p>
+          <p class="stat-description">Face recognition matches</p>
+        </div>
+        <div class="stat-trend">
+          <span class="trend-badge ai">AI Powered</span>
+        </div>
+      </div>
+
+      <!-- Pending Alerts -->
+      <div class="stat-card alerts-card">
+        <div class="stat-icon">🔔</div>
+        <div class="stat-info">
+          <h3 class="stat-number">
+            <span *ngIf="statsLoading" class="skeleton-loader">&nbsp;</span>
+            <span *ngIf="!statsLoading">{{ pendingAlerts }}</span>
+          </h3>
+          <p class="stat-label">Pending Alerts</p>
+          <p class="stat-description">Require attention</p>
+        </div>
+        <div class="stat-trend">
+          <span class="trend-badge warning" *ngIf="pendingAlerts > 0 && !statsLoading">Action Needed</span>
+          <span class="trend-badge success" *ngIf="pendingAlerts === 0 && !statsLoading">All Clear</span>
+          <span class="trend-badge" *ngIf="statsLoading">Loading...</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TWO COLUMN LAYOUT -->
+    <div class="gov-two-column-grid">
+
+      <!-- RECENT CASES -->
+      <div class="dashboard-panel">
+        <div class="panel-header">
+          <h2>📋 Recent Cases</h2>
+          <a routerLink="/police-cases" class="view-all-link">View All →</a>
+        </div>
+
+        <div class="panel-content">
+          <!-- Loading skeleton for cases -->
+          <div *ngIf="casesLoading" class="skeleton-list">
+            <div *ngFor="let i of [1,2,3,4,5]" class="skeleton-item">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-lines">
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line long"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actual case data -->
+          <div *ngIf="!casesLoading">
+            <div *ngFor="let case of recentCases" class="case-item" [routerLink]="['/case-timeline', case.person_id]" style="cursor: pointer;">
+              <div class="case-avatar">
+                <img [src]="case.photo_path ? 'http://127.0.0.1:8000/uploads/' + case.photo_path : 'assets/default-avatar.png'" 
+                     [alt]="case.full_name">
+              </div>
+              <div class="case-details">
+                <h4 class="case-name">{{ case.full_name }}</h4>
+                <p class="case-meta">
+                  <span>🆔 {{ case.person_id }}</span>
+                  <span>📍 {{ case.last_seen_location || 'Unknown' }}</span>
+                </p>
+                <p class="case-date">{{ case.created_at | date:'medium' }}</p>
+              </div>
+              <div class="case-status-badge" [style.background]="getStatusColor(case.status)">
+                <span>{{ getStatusIcon(case.status) }} {{ case.status || 'MISSING' }}</span>
+              </div>
+            </div>
+
+            <div *ngIf="recentCases.length === 0" class="empty-panel">
+              <p>No recent cases found</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT AI DETECTIONS -->
+      <div class="dashboard-panel">
+        <div class="panel-header">
+          <h2>🤖 Recent AI Detections</h2>
+          <a routerLink="/ai-recognition" class="view-all-link">Run Scan →</a>
+        </div>
+
+        <div class="panel-content">
+          <!-- Loading skeleton for detections -->
+          <div *ngIf="detectionsLoading" class="skeleton-list">
+            <div *ngFor="let i of [1,2,3,4,5]" class="skeleton-item">
+              <div class="skeleton-icon"></div>
+              <div class="skeleton-lines">
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-line medium"></div>
+                <div class="skeleton-line long"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actual detection data -->
+          <div *ngIf="!detectionsLoading">
+            <div *ngFor="let detection of recentDetections" class="detection-item">
+              <div class="detection-icon" [class]="detection.result">
+                <span *ngIf="detection.result === 'MATCH'">✅</span>
+                <span *ngIf="detection.result === 'NO_MATCH'">❌</span>
+                <span *ngIf="!detection.result">⏳</span>
+              </div>
+              <div class="detection-details">
+                <h4 class="detection-person">{{ detection.person_name || 'Unknown' }}</h4>
+                <p class="detection-meta">
+                  <span>🎯 {{ detection.confidence || 0 }}% Match</span>
+                  <span>📷 {{ detection.camera_name || 'CCTV' }}</span>
+                </p>
+                <p class="detection-date">{{ detection.detected_at | date:'medium' }}</p>
+              </div>
+            </div>
+
+            <div *ngIf="recentDetections.length === 0" class="empty-panel">
+              <p>No AI detections yet</p>
+              <p class="hint">Run face recognition to see results</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="gov-quick-actions-panel">
+      <h2 class="gov-section-title">⚡ Quick Actions</h2>
+      <div class="gov-actions-grid">
+        <a routerLink="/police-cases" class="action-card">
+          <span class="action-icon">📁</span>
+          <h3>View Cases</h3>
+          <p>Manage all missing person cases</p>
+        </a>
+        
+        <a routerLink="/ai-recognition" class="action-card">
+          <span class="action-icon">🤖</span>
+          <h3>AI Recognition</h3>
+          <p>Run face detection scans</p>
+        </a>
+        
+        <a routerLink="/cctv" class="action-card">
+          <span class="action-icon">📹</span>
+          <h3>CCTV Management</h3>
+          <p>Manage camera feeds</p>
+        </a>
+        
+        <a routerLink="/alerts" class="action-card">
+          <span class="action-icon">🔔</span>
+          <h3>Alerts</h3>
+          <p>View system alerts</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- TWO COLUMN: LIVE MAP & SCROLLING NEWS -->
+    <div class="gov-two-column-grid">
+      
+      <!-- LOCATION MAP -->
+      <div class="dashboard-panel">
+        <div class="panel-header">
+          <h2>🗺️ Location Map</h2>
+        </div>
+        <div class="panel-content">
+          <div class="simple-map-container">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121059.04300274698!2d73.7799709582031!3d18.524598699999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1234567890"
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCROLLING NEWS/NOTES -->
+      <div class="dashboard-panel">
+        <div class="panel-header">
+          <h2>📰 Latest News & Notes</h2>
+          <span class="update-count">{{ newsItems.length }} Updates</span>
+        </div>
+        <div class="panel-content">
+          <div class="news-ticker-container">
+            <div class="news-ticker">
+              <!-- First set of news items -->
+              <div *ngFor="let news of newsItems" class="news-item" [ngClass]="'news-' + news.type">
+                <div class="news-icon">{{ getNewsIcon(news.type) }}</div>
+                <div class="news-content">
+                  <h4 class="news-title">{{ news.title }}</h4>
+                  <p class="news-description">{{ news.content }}</p>
+                  <p class="news-time">{{ news.time }}</p>
+                </div>
+                <div class="news-badge" [style.background]="getNewsColor(news.type)">
+                  {{ news.type | uppercase }}
+                </div>
+              </div>
+              <!-- Duplicate set for seamless scrolling -->
+              <div *ngFor="let news of newsItems" class="news-item" [ngClass]="'news-' + news.type">
+                <div class="news-icon">{{ getNewsIcon(news.type) }}</div>
+                <div class="news-content">
+                  <h4 class="news-title">{{ news.title }}</h4>
+                  <p class="news-description">{{ news.content }}</p>
+                  <p class="news-time">{{ news.time }}</p>
+                </div>
+                <div class="news-badge" [style.background]="getNewsColor(news.type)">
+                  {{ news.type | uppercase }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ADVANCED ANALYTICS -->
+    <div class="gov-analytics-section">
+      <h2 class="gov-section-title">📊 Advanced Analytics</h2>
+
+      <div class="gov-analytics-grid">
+        
+        <!-- Resolution Rate -->
+        <div class="analytics-card">
+          <h3>📈 Resolution Rate</h3>
+          <div class="analytics-metric">
+            <span class="metric-value" [style.color]="resolutionRate > 50 ? '#00ff9c' : '#ffa500'">
+              {{ resolutionRate }}%
+            </span>
+            <span class="metric-label">Cases Resolved</span>
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill" [style.width.%]="resolutionRate" 
+                 [style.background]="resolutionRate > 50 ? '#00ff9c' : '#ffa500'"></div>
+          </div>
+        </div>
+
+        <!-- Avg Detection Time -->
+        <div class="analytics-card">
+          <h3>⏱️ Avg Detection Time</h3>
+          <div class="analytics-metric">
+            <span class="metric-value">{{ avgDetectionTime }}</span>
+            <span class="metric-label">Time to Match</span>
+          </div>
+          <p class="metric-description">Average time to detect a match</p>
+        </div>
+
+        <!-- Weekly Trend -->
+        <div class="analytics-card">
+          <h3>📅 Weekly Trend</h3>
+          <div class="analytics-metric">
+            <span class="metric-value" [class.trend-up]="weeklyTrend > 0" [class.trend-down]="weeklyTrend < 0">
+              {{ weeklyTrend > 0 ? '+' : ''}}{{ weeklyTrend }}%
+            </span>
+            <span class="metric-label">vs Last Week</span>
+          </div>
+          <p class="metric-description" *ngIf="weeklyTrend > 0">📈 Increase in cases</p>
+          <p class="metric-description" *ngIf="weeklyTrend <= 0">📉 Decrease in cases</p>
+        </div>
+
+        <!-- Monthly Trend -->
+        <div class="analytics-card">
+          <h3>📆 Monthly Trend</h3>
+          <div class="analytics-metric">
+            <span class="metric-value" [class.trend-up]="monthlyTrend > 0" [class.trend-down]="monthlyTrend < 0">
+              {{ monthlyTrend > 0 ? '+' : ''}}{{ monthlyTrend }}%
+            </span>
+            <span class="metric-label">vs Last Month</span>
+          </div>
+          <p class="metric-description" *ngIf="monthlyTrend > 0">📈 Increase in cases</p>
+          <p class="metric-description" *ngIf="monthlyTrend <= 0">📉 Decrease in cases</p>
+        </div>
+
+      </div>
+
+      <!-- TWO COLUMN ANALYTICS -->
+      <div class="gov-analytics-two-columns">
+        
+        <!-- Age Group Distribution -->
+        <div class="analytics-panel">
+          <h3>👥 Age Group Distribution</h3>
+          <div class="distribution-list">
+            <div *ngFor="let item of ageGroupStats" class="distribution-item">
+              <div class="distribution-header">
+                <span class="distribution-label">{{ item.group }} years</span>
+                <span class="distribution-count">{{ item.count }} ({{ item.percentage }}%)</span>
+              </div>
+              <div class="distribution-bar">
+                <div class="distribution-fill" [style.width.%]="item.percentage"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gender Distribution -->
+        <div class="analytics-panel">
+          <h3>👤 Gender Distribution</h3>
+          <div class="distribution-list">
+            <div *ngFor="let item of genderStats" class="distribution-item">
+              <div class="distribution-header">
+                <span class="distribution-label">{{ item.gender }}</span>
+                <span class="distribution-count">{{ item.count }} ({{ item.percentage }}%)</span>
+              </div>
+              <div class="distribution-bar">
+                <div class="distribution-fill" [style.width.%]="item.percentage"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Top Locations -->
+      <div class="gov-analytics-panel gov-full-width">
+        <h3>📍 Top Missing Person Locations</h3>
+        <div class="gov-locations-grid">
+          <div *ngFor="let loc of trendingLocations; let i = index" class="location-card">
+            <div class="location-rank">#{{ i + 1 }}</div>
+            <div class="location-info">
+              <h4>{{ loc.location }}</h4>
+              <p>{{ loc.count }} cases reported</p>
+            </div>
+            <div class="location-badge">{{ loc.count }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- GOVERNMENT FOOTER -->
+  <footer class="gov-footer">
+    <div class="gov-footer-container">
+      <div class="gov-footer-section">
+        <h3>🚔 Pune City Police</h3>
+        <p>Missing Person Tracking & AI Recognition System</p>
+        <p class="gov-footer-address">Pune, Maharashtra - 411001</p>
+      </div>
+      <div class="gov-footer-section">
+        <h4>Quick Links</h4>
+        <a routerLink="/about-system">About System</a>
+        <a routerLink="/how-it-works">How It Works</a>
+        <a routerLink="/faqs">FAQs</a>
+      </div>
+      <div class="gov-footer-section">
+        <h4>Services</h4>
+        <a routerLink="/police-cases">View Cases</a>
+        <a routerLink="/ai-recognition">AI Recognition</a>
+        <a routerLink="/view-fir">FIR Records</a>
+      </div>
+      <div class="gov-footer-section">
+        <h4>Emergency Contacts</h4>
+        <p>📞 Police: 100/112</p>
+        <p>📱 WhatsApp: 8975283100</p>
+        <p>📧 Email: police@pune.gov.in</p>
+      </div>
+    </div>
+    <div class="gov-footer-bottom">
+      <p>© 2026 Pune City Police | Missing Person Tracking System | All Rights Reserved</p>
+      <p class="gov-footer-disclaimer">This is a government authorized system for law enforcement use only</p>
+    </div>
+  </footer>
+
+</div>

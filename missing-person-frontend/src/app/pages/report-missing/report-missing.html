@@ -1,0 +1,63 @@
+<div class="page-container">
+  <div class="form-card">
+
+    <h2>🚨 Report Missing Person</h2>
+
+<form (ngSubmit)="onSubmit()">
+
+  <!-- Missing Person Details -->
+
+  <input type="text"
+         placeholder="Full Name"
+         [(ngModel)]="formData.name"
+         name="name"
+         required>
+
+  <input type="number"
+         placeholder="Age"
+         [(ngModel)]="formData.age"
+         name="age"
+         required>
+
+  <select [(ngModel)]="formData.gender" name="gender">
+    <option value="">Select Gender</option>
+    <option>Male</option>
+    <option>Female</option>
+  </select>
+
+  <input type="text"
+         placeholder="Last Seen Location"
+         [(ngModel)]="formData.location"
+         name="location">
+
+  <textarea
+    placeholder="Description"
+    [(ngModel)]="formData.description"
+    name="description">
+  </textarea>
+
+  <!-- 👤 REPORTER DETAILS (NEW) -->
+
+  <input type="text"
+         placeholder="Your Name (Reporter)"
+         [(ngModel)]="formData.reporter_name"
+         name="reporter_name"
+         required>
+
+  <input type="text"
+         placeholder="Mobile Number"
+         [(ngModel)]="formData.reporter_mobile"
+         name="reporter_mobile"
+         required>
+
+  <!-- 📷 FILE -->
+  <input type="file" (change)="onFileSelect($event)">
+
+  <!-- SUBMIT -->
+  <button type="submit">Submit Report</button>
+
+</form>
+
+
+  </div>
+</div>

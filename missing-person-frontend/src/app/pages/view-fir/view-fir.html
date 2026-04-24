@@ -1,0 +1,68 @@
+<div class="container">
+
+  <h2 class="title">📄 FIR Records</h2>
+
+  <div class="search-box">
+    <input 
+  type="text" 
+  placeholder="🔍 Search by location..." 
+  [(ngModel)]="searchText"
+  (input)="onSearch()"
+/>
+  </div>
+
+  <table class="fir-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Incident</th>
+        <th>Location</th>
+        <th>View</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let fir of filteredList">
+  <td>{{fir.fir_id}}</td>
+  <td>{{fir.full_name}}</td>
+  <td>{{fir.email}}</td>
+  <td>{{fir.phone}}</td>
+  <td>{{fir.incident_type}}</td>
+  <td>{{fir.location}}</td>
+
+  <!-- 👁 VIEW COLUMN -->
+  <td>
+    <button class="view-btn" (click)="viewFIR(fir)">
+      👁
+    </button>
+  </td>
+
+  <!-- ⬇ DOWNLOAD COLUMN -->
+  <td>
+    <button class="download-btn" (click)="downloadPDF(fir)">
+      ⬇
+    </button>
+  </td>
+</tr>
+    </tbody>
+  </table>
+  
+<div class="modal" *ngIf="selectedFIR">
+  <div class="modal-content">
+    <h3>FIR Details</h3>
+
+    <p><b>ID:</b> {{selectedFIR.fir_id}}</p>
+    <p><b>Name:</b> {{selectedFIR.full_name}}</p>
+    <p><b>Email:</b> {{selectedFIR.email}}</p>
+    <p><b>Phone:</b> {{selectedFIR.phone}}</p>
+    <p><b>Incident:</b> {{selectedFIR.incident_type}}</p>
+    <p><b>Location:</b> {{selectedFIR.location}}</p>
+
+    <button (click)="closeModal()">Close</button>
+  </div>
+</div>
+</div>

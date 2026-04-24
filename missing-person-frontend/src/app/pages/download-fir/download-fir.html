@@ -1,0 +1,47 @@
+<h2>📥 Download FIR</h2>
+
+<!-- ===== OTP SECTION ===== -->
+<div *ngIf="!isVerified">
+
+  <input [(ngModel)]="mobile" placeholder="Enter Mobile Number">
+  <button (click)="sendOtp()">Send OTP</button>
+
+  <div *ngIf="otpSent">
+    <input [(ngModel)]="otp" placeholder="Enter OTP">
+    <button (click)="verifyOtp()">Verify OTP</button>
+  </div>
+
+</div>
+
+<!-- ===== FIR TABLE ===== -->
+<div *ngIf="isVerified">
+
+  <p *ngIf="loading">Loading...</p>
+
+  <table *ngIf="firs.length > 0" border="1">
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Gender</th>
+      <th>Location</th>
+      <th>Action</th>
+    </tr>
+
+    <tr *ngFor="let f of firs">
+      <td>{{ f.full_name }}</td>
+      <td>{{ f.age }}</td>
+      <td>{{ f.gender }}</td>
+      <td>{{ f.last_seen_location }}</td>
+      <td>
+        <button (click)="download(f.person_id)">
+          Download FIR
+        </button>
+      </td>
+    </tr>
+  </table>
+
+  <p *ngIf="!loading && firs.length === 0">
+    No FIR records found
+  </p>
+
+</div>

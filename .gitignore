@@ -1,0 +1,123 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment Variables (IMPORTANT: Contains secrets)
+.env
+*.env
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+database.db
+
+# Uploaded Files (Large files & user data)
+uploads/
+uploads/*
+!uploads/.gitkeep
+cctv_images/
+cctv_images/*
+!cctv_images/.gitkeep
+face_uploads/
+face_uploads/*
+!face_uploads/.gitkeep
+cropped_faces/
+cropped_faces/*
+!cropped_faces/.gitkeep
+ai_images/
+ai_images/*
+!ai_images/.gitkeep
+recognized/
+recognized/*
+!recognized/.gitkeep
+
+# Logs
+logs/
+*.log
+*.log.py
+
+# Test Files
+test_*.py
+*_test.py
+
+# ML Models (Large files)
+*.pt
+*.pth
+*.onnx
+*.h5
+*.pb
+yolov8n.pt
+yolov8s.pt
+*.weights
+
+# Dataset
+dataset/
+dataset/*
+!dataset/.gitkeep
+
+# Temporary Files
+*.tmp
+*.bak
+*.cache
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Coverage
+coverage/
+*.coverage
+htmlcov/
+
+# Distribution
+/dist
+/venv
+/.venv
+
+# Node (if applicable)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation (optional - uncomment if you don't want docs in git)
+# *.md
+# DOC/
+# docs/
+
+# Secrets & Credentials
+secrets/
+credentials/
+*.pem
+*.key
+
+# OS specific
+.LSOverride
+
+# Python distribution environment
+/pythoncas

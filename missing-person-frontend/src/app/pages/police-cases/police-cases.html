@@ -1,0 +1,100 @@
+<div class="header-container">
+  <h2 class="title">👮 Police Cases</h2>
+
+  <input 
+    type="text" 
+    class="search-box"
+    placeholder="🔍 Search by location..." 
+    (input)="filterLocation($event)" 
+  />
+</div>
+
+<br><br>
+
+<div *ngIf="loading" class="loading">Loading...</div>
+
+<div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+<table *ngIf="!loading && filteredCases.length > 0" class="modern-table">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Image</th>
+    <th>Description</th>
+    <th>Status</th>
+  </tr>
+
+  <tr *ngFor="let c of filteredCases" class="table-row">
+    <td>{{ c.person_id }}</td>
+    <td>{{ c.full_name }}</td>
+    <td>{{ c.last_seen_location }}</td>
+
+    <td>
+      <button class="view-btn" (click)="viewImage(c.photo_path)">👁</button>
+    </td>
+
+    <td>
+  <button class="view-btn" (click)="openDescription(c.description)">
+    📄
+  </button>
+</td>
+
+    <td>
+      <select class="status-dropdown"
+        #statusSelect 
+        (change)="updateStatus(c.person_id, statusSelect.value)">
+        <option value="MISSING" [selected]="c.status === 'MISSING'">MISSING</option>
+        <option value="FOUND" [selected]="c.status === 'FOUND'">FOUND</option>
+      </select>
+    </td>
+  </tr>
+</table>
+
+<div *ngIf="!loading && filteredCases.length === 0" class="no-data">
+  🚫 No cases found
+</div>
+
+<!-- 🔥 IMAGE POPUP MODAL -->
+<div class="image-modal" *ngIf="selectedImage" (click)="closeImage()">
+  <div class="image-modal-content" (click)="$event.stopPropagation()">
+    <button class="image-close-btn" (click)="closeImage()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    
+    <!-- Loading indicator -->
+    <div *ngIf="!imageLoadError" class="image-loading">
+      <p>⏳ Loading image...</p>
+    </div>
+    
+    <img 
+      [src]="selectedImage" 
+      alt="Missing Person Image" 
+      class="modal-image"
+      (error)="onImageError()"
+      (load)="onImageLoad()"
+      [style.display]="imageLoadError ? 'none' : 'block'"
+    >
+    
+    <div *ngIf="imageLoadError" class="image-error">
+      <p>❌ Failed to load image</p>
+      <p class="image-url-text">{{ selectedImage }}</p>
+      <p class="image-hint">💡 Make sure the backend server is running on http://127.0.0.1:8000</p>
+    </div>
+  </div>
+</div>
+
+<!-- 🔥 DESCRIPTION MODAL -->
+<div class="modal" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-x-close-btn" (click)="closeModal()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <h3>📝 Case Description</h3>
+    <p>{{ selectedDescription }}</p>
+  </div>
+</div>

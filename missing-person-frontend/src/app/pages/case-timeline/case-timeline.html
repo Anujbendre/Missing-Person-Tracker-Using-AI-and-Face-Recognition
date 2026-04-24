@@ -1,0 +1,203 @@
+<div class="gov-timeline-wrapper">
+
+  <!-- GOVERNMENT HEADER BANNER -->
+  <div class="gov-top-banner">
+    <div class="gov-banner-container">
+      <div class="gov-banner-left">
+        <img src="/assets/police_logo.png" alt="Police Logo" class="gov-banner-logo">
+        <div class="gov-title-block">
+          <h1 class="gov-main-title">Case Timeline & Investigation</h1>
+          <p class="gov-subtitle">Missing Person Tracking System</p>
+          <p class="gov-ministry">Maharashtra State Police | Government of India</p>
+        </div>
+      </div>
+      <div class="gov-banner-right">
+        <div class="gov-emblem-box">
+          <div class="ashoka-emblem">&#9800;</div>
+          <p class="gov-swachha">Swachha Bharat | Digital India</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOVERNMENT NAVIGATION BAR -->
+  <nav class="gov-nav-bar">
+    <div class="gov-nav-container">
+      <div class="gov-nav-left">
+        <button class="gov-back-btn" (click)="goBack()">
+          <span class="nav-icon">←</span> Back to Dashboard
+        </button>
+        <span class="gov-nav-divider">|</span>
+        <span class="gov-case-id">Case #{{ caseId }}</span>
+      </div>
+      <div class="gov-nav-right">
+        <span class="gov-status-badge" *ngIf="caseDetails" [style.background]="getStatusColor()">
+          {{ getStatusLabel() }}
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN GOVERNMENT CONTENT AREA -->
+  <div class="gov-main-content">
+
+    <!-- CASE DETAILS SECTION -->
+    <div class="gov-case-overview-section" *ngIf="caseDetails || loading">
+      
+      <!-- Person Information Card -->
+      <div class="gov-info-card">
+        <div class="gov-card-header">
+          <h2>👤 Missing Person Details</h2>
+        </div>
+        <div class="gov-card-content">
+          <div class="gov-person-photo">
+            <!-- Image loading skeleton -->
+            <div class="gov-image-skeleton" *ngIf="caseDetails?.photo_path && !imageLoaded">
+              <div class="gov-skeleton-spinner"></div>
+            </div>
+            
+            <!-- Actual image -->
+            <img [src]="caseDetails?.photo_path ? getImageUrl(caseDetails.photo_path) : ''" 
+                 [alt]="caseDetails?.full_name"
+                 *ngIf="caseDetails?.photo_path"
+                 (load)="onImageLoaded()"
+                 (error)="onImageError()"
+                 [style.display]="imageLoaded ? 'block' : 'none'"
+                 loading="lazy">
+            
+            <!-- No image placeholder -->
+            <div class="gov-no-image" *ngIf="!caseDetails?.photo_path">
+              <span>📷</span>
+            </div>
+          </div>
+          
+          <div class="gov-person-details">
+            <h3 class="gov-person-name">{{ loading ? 'Loading...' : caseDetails?.full_name }}</h3>
+            
+            <div class="gov-details-grid">
+              <div class="gov-detail-item">
+                <span class="gov-detail-label">🆔 Case ID</span>
+                <span class="gov-detail-value">{{ loading ? '---' : '#' + caseDetails?.person_id }}</span>
+              </div>
+              <div class="gov-detail-item">
+                <span class="gov-detail-label">📍 Last Seen</span>
+                <span class="gov-detail-value">{{ loading ? '---' : (caseDetails?.last_seen_location || 'Unknown') }}</span>
+              </div>
+              <div class="gov-detail-item">
+                <span class="gov-detail-label">📅 Age</span>
+                <span class="gov-detail-value">{{ loading ? '---' : (caseDetails?.age || 'N/A') + ' years' }}</span>
+              </div>
+              <div class="gov-detail-item">
+                <span class="gov-detail-label">👤 Gender</span>
+                <span class="gov-detail-value">{{ loading ? '---' : (caseDetails?.gender || 'N/A') }}</span>
+              </div>
+              <div class="gov-detail-item">
+                <span class="gov-detail-label">📞 Contact</span>
+                <span class="gov-detail-value">{{ loading ? '---' : (caseDetails?.contact_info || 'N/A') }}</span>
+              </div>
+              <div class="gov-detail-item">
+                <span class="gov-detail-label">📝 Description</span>
+                <span class="gov-detail-value">{{ loading ? '---' : (caseDetails?.description || 'N/A') }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPDATE STATUS SECTION -->
+      <div class="gov-status-update-card" *ngIf="!loading">
+        <div class="gov-card-header">
+          <h2>🔄 Update Case Status</h2>
+        </div>
+        <div class="gov-card-content">
+          <div class="gov-status-buttons">
+            <button class="gov-status-btn" 
+                    [class.gov-active]="caseDetails?.status === 'MISSING'"
+                    (click)="updateStatus('MISSING')">
+              📝 MISSING
+            </button>
+            <button class="gov-status-btn" 
+                    [class.gov-active]="caseDetails?.status === 'IN_PROGRESS'"
+                    (click)="updateStatus('IN_PROGRESS')">
+              🔍 IN PROGRESS
+            </button>
+            <button class="gov-status-btn" 
+                    [class.gov-active]="caseDetails?.status === 'FOUND'"
+                    (click)="updateStatus('FOUND')">
+              ✅ FOUND
+            </button>
+            <button class="gov-status-btn" 
+                    [class.gov-active]="caseDetails?.status === 'CLOSED'"
+                    (click)="updateStatus('CLOSED')">
+              📋 CLOSED
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TIMELINE SECTION -->
+    <div class="gov-timeline-section" *ngIf="!loading && timeline.length > 0">
+      <div class="gov-section-header">
+        <h2>📈 Investigation Progress Timeline</h2>
+      </div>
+
+      <div class="gov-timeline-wrapper">
+        
+        <!-- Timeline Line -->
+        <div class="gov-timeline-line"></div>
+
+        <!-- Timeline Items -->
+        <div *ngFor="let item of timeline; let i = index" 
+             class="gov-timeline-item" 
+             [class.gov-completed]="item.completed"
+             [class.gov-active]="item.active">
+          
+          <!-- Timeline Dot -->
+          <div class="gov-timeline-dot" [style.background]="item.completed ? item.color : ''" 
+               [style.borderColor]="item.color">
+            <span class="gov-dot-icon">{{ item.icon }}</span>
+          </div>
+
+          <!-- Timeline Content -->
+          <div class="gov-timeline-content" [style.borderColor]="item.color">
+            <div class="gov-content-header">
+              <h3 class="gov-content-title">{{ item.label }}</h3>
+              <span class="gov-content-badge gov-complete" *ngIf="item.completed">✅ Complete</span>
+              <span class="gov-content-badge gov-current" *ngIf="item.active">🔄 Current</span>
+              <span class="gov-content-badge gov-pending" *ngIf="!item.completed && !item.active">⏳ Pending</span>
+            </div>
+            
+            <p class="gov-content-date" *ngIf="item.date">
+              🕒 {{ item.date }}
+            </p>
+
+            <p class="gov-content-details" *ngIf="item.details">
+              {{ item.details }}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="gov-empty-state" *ngIf="!loading && !caseDetails">
+      <div class="gov-empty-icon">📭</div>
+      <h2>Case Not Found</h2>
+      <p>The requested case could not be found in the system</p>
+      <button class="gov-back-btn-large" (click)="goBack()">← Go Back</button>
+    </div>
+
+  </div>
+
+  <!-- GOVERNMENT FOOTER -->
+  <footer class="gov-footer">
+    <div class="gov-footer-bottom">
+      <p>© 2026 Pune City Police | Missing Person Tracking System | All Rights Reserved</p>
+    </div>
+  </footer>
+
+</div>

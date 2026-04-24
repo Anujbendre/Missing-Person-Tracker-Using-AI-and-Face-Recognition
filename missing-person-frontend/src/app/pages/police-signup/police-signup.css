@@ -1,0 +1,190 @@
+/* FULL PAGE CENTER */
+.signup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #eef2f5;
+}
+
+/* CARD */
+.signup-card {
+  width: 360px;
+  padding: 25px;
+  border-radius: 14px;
+  background: white;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  position: relative;
+}
+
+/* TITLE */
+.signup-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #222;
+  text-align: center;
+}
+
+/* INPUT FIELDS */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+/* SOFT INPUT STYLE */
+.mat-mdc-text-field-wrapper {
+  background: #f5f7fa !important;
+  border-radius: 8px !important;
+}
+
+/* BORDER LIGHT */
+.mdc-notched-outline__leading,
+.mdc-notched-outline__notch,
+.mdc-notched-outline__trailing {
+  border-color: #ddd !important;
+}
+
+/* FOCUS EFFECT */
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #2563eb !important;
+}
+
+/* INPUT TEXT */
+.mat-mdc-input-element {
+  color: #333 !important;
+  font-size: 14px;
+}
+
+/* LABEL */
+.mat-mdc-floating-label {
+  color: #777 !important;
+}
+
+/* BUTTON */
+button[mat-raised-button] {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 10px;
+
+  background: #2563eb;
+  color: white;
+
+  transition: 0.3s;
+}
+
+/* BUTTON HOVER */
+button[mat-raised-button]:hover {
+  background: #1e4fd1;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.4);
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+
+  color: #ff4d6d;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* REMOVE HOVER */
+.close-btn:hover {
+  background: transparent !important;
+  transform: scale(1.1);
+}
+
+/* REMOVE RIPPLE */
+.mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
+  display: none !important;
+}
+
+/* PASSWORD EYE BUTTON - ENHANCED & VISIBLE */
+.eye-btn {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 4px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  transition: all 0.3s ease !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  width: 36px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* HOVER EFFECT */
+.eye-btn:hover {
+  background: rgba(37, 99, 235, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3) !important;
+  transform: scale(1.1) !important;
+}
+
+/* ACTIVE STATE */
+.eye-btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* REMOVE RIPPLE */
+.eye-btn .mat-mdc-button-persistent-ripple,
+.eye-btn .mat-ripple-element {
+  display: none !important;
+}
+
+/* ICON STYLE - MAKE IT VISIBLE */
+.eye-btn mat-icon {
+  color: #64748b !important;
+  font-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* ICON HOVER */
+.eye-btn:hover mat-icon {
+  color: #2563eb !important;
+  transform: scale(1.1) !important;
+}
+
+/* ENSURE MAT-FORM-FIELD SHOWS SUFFIX */
+::ng-deep .mat-mdc-form-field .mat-mdc-form-field-suffix {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-form-field-suffix .mat-mdc-icon-button {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}

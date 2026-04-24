@@ -1,0 +1,126 @@
+.container {
+  padding: 20px;
+  background: linear-gradient(to right, #eef2f7, #dbe6f6);
+  min-height: 100vh;
+}
+
+.title {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  padding: 10px 20px;
+  width: 300px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  background: #f0f0f0;
+  font-size: 14px;
+}
+
+.fir-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.fir-table thead {
+  background: #2c4a9a;
+  color: white;
+}
+
+.fir-table th {
+  padding: 12px;
+  text-align: center;
+}
+
+.fir-table td {
+  padding: 12px;
+  text-align: center;
+}
+
+.fir-table tbody tr {
+  background: #ffffff;
+  transition: all 0.3s ease;
+}
+
+/* 🔥 HOVER EFFECT */
+.fir-table tbody tr:hover {
+  background: #dbe6f6;
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+/* Alternate rows */
+.fir-table tbody tr:nth-child(even) {
+  background: #f5f7fb;
+}
+
+.download-btn {
+  background: #2c4a9a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.download-btn:hover {
+  background: #1a2f6b;
+  transform: scale(1.05);
+}
+
+.view-btn {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background: #117a8b;
+}
+
+/* MODAL BACKGROUND */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;   /* 🔥 VERY IMPORTANT */
+}
+
+/* MODAL BOX */
+.modal-content {
+  background: white;
+  padding: 25px;
+  width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+  position: relative;  /* 🔥 FIX */
+}
+td {
+  text-align: center;
+  vertical-align: middle;
+}

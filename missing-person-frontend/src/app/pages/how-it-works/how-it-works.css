@@ -1,0 +1,45 @@
+.how-container {
+  padding: 40px;
+  text-align: center;
+}
+
+.subtitle {
+  margin-bottom: 30px;
+  color: gray;
+}
+
+/* STEP LAYOUT */
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* EACH STEP */
+.step {
+  background: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  margin: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* NUMBER CIRCLE */
+.circle {
+  width: 40px;
+  height: 40px;
+  background: #f39c12;
+  color: white;
+  border-radius: 50%;
+  line-height: 40px;
+  margin: auto;
+  font-weight: bold;
+}
+
+/* ARROW */
+.arrow {
+  font-size: 24px;
+  margin: 0 10px;
+}

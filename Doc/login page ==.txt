@@ -1,0 +1,8 @@
+login page ==>
+
+1. ng generate component pages/login
+   ==>  =.  login.css
+	    =.  login.html
+            =.  login.spec.ts
+            =.  login.ts
+

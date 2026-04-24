@@ -1,0 +1,32 @@
+<div class="cctv-page">
+
+  <h2 class="title">📹 Live CCTV Monitoring</h2>
+
+  <!-- BUTTONS -->
+  <div class="controls">
+    <button class="start-btn" (click)="startCamera()" *ngIf="!isCameraOn">
+      ▶️ Start CCTV
+    </button>
+
+    <button class="stop-btn" (click)="stopCamera()" *ngIf="isCameraOn">
+      ⛔ Close Camera
+    </button>
+  </div>
+
+  <!-- CAMERA FRAME -->
+  <div class="camera-frame" *ngIf="isCameraOn">
+
+    <!-- LIVE TEXT -->
+    <div class="live-badge">
+      🔴 LIVE
+    </div>
+
+    <!-- ✅ IMPORTANT FIX -->
+    <video #video autoplay muted playsinline></video>
+
+    <!-- SCAN ANIMATION -->
+    <div class="scan-line"></div>
+
+  </div>
+
+</div>

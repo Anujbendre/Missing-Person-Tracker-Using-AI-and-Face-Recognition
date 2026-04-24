@@ -1,0 +1,242 @@
+/* FULL PAGE CENTER */
+.page-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Police themed gradient background */
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Animated background */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* CARD */
+.signup-card {
+  width: 420px;
+  padding: 35px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: slideUp 0.5s ease;
+}
+
+/* Card animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #1e3c72;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* INPUT */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+/* INPUT BOX STYLE */
+.mat-mdc-text-field-wrapper {
+  background: #f5f7fa !important;
+  border-radius: 10px !important;
+}
+
+/* BORDER LIGHT */
+.mdc-notched-outline__leading,
+.mdc-notched-outline__notch,
+.mdc-notched-outline__trailing {
+  border-color: #ddd !important;
+}
+
+/* FOCUS BORDER */
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: #2563eb !important;
+}
+
+/* INPUT TEXT */
+.mat-mdc-input-element {
+  font-size: 14px;
+  color: #333 !important;
+}
+
+/* BUTTON */
+button[type="submit"] {
+  width: 100%;
+  padding: 11px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 10px;
+
+  background: #2563eb;
+  color: white;
+  transition: 0.3s;
+}
+
+button[type="submit"]:hover {
+  background: #1e4fd1;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.4);
+}
+
+/* CLOSE BUTTON (NO BACKGROUND EVER) */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+
+  color: #ff4d6d;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.close-btn:hover,
+.close-btn:focus,
+.close-btn:active {
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  outline: none !important;
+}
+
+/* REMOVE MATERIAL RIPPLE */
+.mat-mdc-button-persistent-ripple,
+.mat-ripple-element {
+  display: none !important;
+}
+
+/* PASSWORD EYE BUTTON - ENHANCED & VISIBLE */
+.eye-btn {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 4px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  transition: all 0.3s ease !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  width: 36px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* HOVER EFFECT */
+.eye-btn:hover {
+  background: rgba(37, 99, 235, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3) !important;
+  transform: scale(1.1) !important;
+}
+
+/* ACTIVE STATE */
+.eye-btn:active {
+  transform: scale(0.95) !important;
+}
+
+/* REMOVE RIPPLE */
+.eye-btn .mat-mdc-button-persistent-ripple,
+.eye-btn .mat-ripple-element {
+  display: none !important;
+}
+
+/* ICON STYLE - MAKE IT VISIBLE */
+.eye-btn mat-icon {
+  color: #64748b !important;
+  font-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* ICON HOVER */
+.eye-btn:hover mat-icon {
+  color: #2563eb !important;
+  transform: scale(1.1) !important;
+}
+
+/* ENSURE MAT-FORM-FIELD SHOWS SUFFIX */
+::ng-deep .mat-mdc-form-field .mat-mdc-form-field-suffix {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+::ng-deep .mat-mdc-form-field-suffix .mat-mdc-icon-button {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* LOGIN BUTTON CENTER */
+.login-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 15px;
+
+  background: #2563eb !important;
+  color: white !important;
+
+  transition: 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.login-btn:hover {
+  background: #1e4fd1 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+}
