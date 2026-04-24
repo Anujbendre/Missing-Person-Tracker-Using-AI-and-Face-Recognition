@@ -96,8 +96,12 @@ export class AuthService {
   }
 
   // ================= FACE RECOGNITION =================
-  detectImage(imagePath: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/detect-image`, { image_path: imagePath });
+  detectImage(imagePath: string, selectedPersonId?: number): Observable<any> {
+    const payload: any = { image_path: imagePath };
+    if (selectedPersonId) {
+      payload.selected_person_id = selectedPersonId;
+    }
+    return this.http.post(`${this.baseUrl}/detect-image`, payload);
   }
 
   autoDetect(): Observable<any> {

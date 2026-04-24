@@ -162,7 +162,8 @@ export class AiRecognitionComponent implements OnInit {
     this.scanAbortController = new AbortController();
 
     // Call backend API directly (no animation delay for speed)
-    this.authService.detectImage(imagePath).subscribe({
+    console.log('👤 Selected Person ID:', this.selectedCase?.person_id);
+    this.authService.detectImage(imagePath, this.selectedCase?.person_id).subscribe({
       next: (result: any) => {
         console.log('🔍 Scan result:', result);
         console.log('📊 Result status:', result.status);
@@ -357,7 +358,7 @@ export class AiRecognitionComponent implements OnInit {
       // Scan current image
       const imagePath = this.cctvImages[currentIndex].image_path;
       
-      this.authService.detectImage(imagePath).subscribe({
+      this.authService.detectImage(imagePath, this.selectedCase?.person_id).subscribe({
         next: (result: any) => {
           if (result.status === 'MATCH FOUND') {
             results.push({
